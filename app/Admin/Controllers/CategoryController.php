@@ -25,14 +25,16 @@ class CategoryController extends AdminController {
 		$grid = new Grid(new Category);
 
 		$grid->column('id', __('Id'));
-		$grid->column('name', __('Name'));
-		$grid->column('parent_id', __('Parent id'));
-		$grid->column('order', __('Order'));
-		$grid->column('description', __('Description'));
-		$grid->column('active', __('Active'));
-		$grid->column('created_at', __('Created at'));
-		$grid->column('updated_at', __('Updated at'));
-		$grid->column('deleted_at', __('Deleted at'));
+		$grid->column('name', __('名称'));
+		$grid->column('parent_id', __('父 id'));
+		$grid->column('order', __('排序'));
+		$grid->column('description', __('说明'))->limit(30);
+		$grid->column('active', __('激活'))->display(function ($active) {
+			return $active ? '是' : '否';
+		});
+		// $grid->column('created_at', __('Created at'));
+		// $grid->column('updated_at', __('Updated at'));
+		// $grid->column('deleted_at', __('Deleted at'));
 
 		return $grid;
 	}
@@ -47,11 +49,11 @@ class CategoryController extends AdminController {
 		$show = new Show(Category::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('name', __('Name'));
-		$show->field('parent_id', __('Parent id'));
-		$show->field('order', __('Order'));
-		$show->field('description', __('Description'));
-		$show->field('active', __('Active'));
+		$show->field('name', __('名称'));
+		$show->field('parent_id', __('父 id'));
+		$show->field('order', __('排序'));
+		$show->field('description', __('说明'));
+		$show->field('active', __('激活'));
 		$show->field('created_at', __('Created at'));
 		$show->field('updated_at', __('Updated at'));
 		$show->field('deleted_at', __('Deleted at'));
@@ -67,11 +69,11 @@ class CategoryController extends AdminController {
 	protected function form() {
 		$form = new Form(new Category);
 
-		$form->text('name', __('Name'));
-		$form->number('parent_id', __('Parent id'));
-		$form->number('order', __('Order'));
-		$form->text('description', __('Description'));
-		$form->switch('active', __('Active'));
+		$form->text('name', __('名称'));
+		$form->number('parent_id', __('父 id'));
+		$form->number('order', __('排序'));
+		$form->text('description', __('说明'));
+		$form->switch('active', __('激活'));
 
 		return $form;
 	}
