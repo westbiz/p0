@@ -16,4 +16,6 @@ Route::group([
 
 	$router->resource('continents', ContinentController::class);
 
+	$router->resource('countries', CountryController::class);
+
 });
