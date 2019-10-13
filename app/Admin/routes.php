@@ -18,4 +18,6 @@ Route::group([
 
 	$router->resource('countries', CountryController::class);
 
+	$router->resource('worldcities', WorldCityController::class);
+
 });

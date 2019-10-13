@@ -15,7 +15,7 @@ class CountryController extends AdminController {
 	 *
 	 * @var string
 	 */
-	protected $title = 'App\Model\Country';
+	protected $title = 'Country | 国家';
 
 	/**
 	 * Make a grid builder.
@@ -44,9 +44,11 @@ class CountryController extends AdminController {
 		});
 
 		$grid->column('id', __('Id'));
-		$grid->column('continent_id', __('洲 id'));
+		// $grid->column('continent_id', __('洲 id'));
+		$grid->column('continent.cn_name', '洲名');
+		$grid->continentlocation('地理位置')->pluck('cn_name')->label('danger');
 		$grid->column('name', __('名称'));
-		$grid->column('lower_name', __('小写'));
+		$grid->column('lower_name', __('小写'))->limit(10);
 		$grid->column('country_code', __('代码'))->limit(10);
 		$grid->column('full_name', __('全称英'))->limit(10);
 		$grid->column('cname', __('中文名'));
@@ -96,8 +98,8 @@ class CountryController extends AdminController {
 	protected function form() {
 		$form = new Form(new Country);
 
-		$form->number('continent_id', __('洲 id'));
-		$form->select('continent_id', '洲名')->options(Continent::pluck('cn_name', 'id'));
+		// $form->number('continent_id', __('洲 id'));
+		$form->select('continent_id', '洲名')->options(Continent::where('parent_id',0)->pluck('cn_name', 'id'));
 		$form->multipleSelect('continentlocation', '地理位置')->options(Continent::where('parent_id', '>', '0')->pluck('cn_name', 'id'));
 		$form->text('name', __('名称'));
 		$form->text('lower_name', __('小写'));
