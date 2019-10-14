@@ -26,4 +26,9 @@ class Country extends Model {
 	public function continentlocation() {
 		return $this->belongsToMany(Continent::class, 't_country_continent', 'country_id', 'continent_id');
 	}
+
+	//一对多反向，国家
+	public function cities() {
+		return $this->hasMany(Worldcity::class, 'country_id', 'id');
+	}
 }
