@@ -45,13 +45,13 @@ class CountryController extends AdminController {
 
 		$grid->column('id', __('Id'));
 		// $grid->column('continent_id', __('洲 id'));
+		$grid->column('cname', __('中文名'));
 		$grid->column('continent.cn_name', '洲名');
 		$grid->continentlocation('地理位置')->pluck('cn_name')->label('danger');
 		$grid->column('name', __('名称'));
-		$grid->column('lower_name', __('小写'))->limit(10);
+		// $grid->column('lower_name', __('小写'))->limit(10);
 		$grid->column('country_code', __('代码'))->limit(10);
 		$grid->column('full_name', __('全称英'))->limit(10);
-		$grid->column('cname', __('中文名'));
 		$grid->column('full_cname', __('F中文全称'))->limit(10);
 		$grid->column('remark', __('备注'))->limit(30);
 		$grid->column('is_island', __('海岛'));
@@ -99,13 +99,13 @@ class CountryController extends AdminController {
 		$form = new Form(new Country);
 
 		// $form->number('continent_id', __('洲 id'));
-		$form->select('continent_id', '洲名')->options(Continent::where('parent_id',0)->pluck('cn_name', 'id'));
-		$form->multipleSelect('continentlocation', '地理位置')->options(Continent::where('parent_id', '>', '0')->pluck('cn_name', 'id'));
+		$form->text('cname', __('中文名'));
 		$form->text('name', __('名称'));
+		$form->select('continent_id', '洲名')->options(Continent::where('parent_id', 0)->pluck('cn_name', 'id'));
 		$form->text('lower_name', __('小写'));
+		$form->multipleSelect('continentlocation', '地理位置')->options(Continent::where('parent_id', '>', '0')->pluck('cn_name', 'id'));
 		$form->text('country_code', __('国家代码'));
 		$form->text('full_name', __('全称中'));
-		$form->text('cname', __('中文名'));
 		$form->text('full_cname', __('中文全称'));
 		$form->textarea('remark', __('备注'));
 		$form->switch('is_island', __('海岛'));
