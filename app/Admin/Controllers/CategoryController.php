@@ -72,7 +72,7 @@ class CategoryController extends AdminController {
 		$form->text('name', __('名称'));
 		$form->number('parent_id', __('父 id'));
 		$form->number('order', __('排序'));
-		$form->text('description', __('说明'));
+		$form->textarea('description', __('说明'))->rows(10);
 		$form->switch('active', __('激活'));
 
 		return $form;
