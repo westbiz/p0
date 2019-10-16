@@ -25,9 +25,30 @@ class WorldCityController extends AdminController {
 	protected function grid() {
 		$grid = new Grid(new WorldCity);
 
+		$grid->filter(function ($filter) {
+			$filter->disableIdFilter();
+			$filter->column(3 / 4, function ($filter) {
+				$continents = Country::orderBy('cname', 'asc')->pluck('cname', 'id');
+				$filter->expand()->equal('country_id', '按国家|地区')->select($continents);
+				$filter->expand()->where(function ($query) {
+					$query->where('cn_name', 'like', "%{$this->input}%")
+						->orWhere('cn_state', 'like', "%{$this->input}%")
+						->orWhere('name', 'like', "%{$this->input}%")
+						->orWhere('lower_name', 'like', "%{$this->input}%")
+						->orWhere('state', 'like', "%{$this->input}%")
+						->orWhere('city_code', 'like', "%{$this->input}%")
+						->orWhere('state_code', 'like', "%{$this->input}%")
+					;
+					// $query->whereHas('country', function ($query){
+					//  $query->where('cname', 'like', "%{$this->input}%");
+					// });
+				}, '关键字');
+			});
+		});
+
 		$grid->column('id', __('Id'));
 		$grid->column('cn_name', __('中文名'));
-		$grid->column('country.cname', __('国家'));
+		$grid->column('country.cname', __('国家地区'));
 		// $grid->column('state', __('州'));
 		$grid->column('name', __('名称'));
 		// $grid->column('lower_name', __('小写'));
@@ -65,7 +86,7 @@ class WorldCityController extends AdminController {
 		$show = new Show(WorldCity::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('country_id', __('国家'));
+		$show->field('country_id', __('国家地区'));
 		$show->field('state', __('州'));
 		$show->field('name', __('名称'));
 		$show->field('lower_name', __('小写'));
