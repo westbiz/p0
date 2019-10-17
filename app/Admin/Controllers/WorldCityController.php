@@ -86,7 +86,11 @@ class WorldCityController extends AdminController {
 		$show = new Show(WorldCity::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('country_id', __('国家地区'));
+		// $show->field('country_id', __('国家地区'));
+		$show->country('国家地区', function($country){
+			$country->setResource('/admin/countries');
+			$country->cname();
+		});
 		$show->field('state', __('州'));
 		$show->field('name', __('名称'));
 		$show->field('lower_name', __('小写'));
