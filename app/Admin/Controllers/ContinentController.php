@@ -25,9 +25,15 @@ class ContinentController extends AdminController {
 		$grid = new Grid(new Continent);
 
 		$grid->column('id', __('Id'));
-		$grid->column('parent_id', __('父 id'));
-		$grid->column('cn_name', __('名称'));
-		$grid->column('en_name', __('英文'));
+		$grid->parentcontinent()->cn_name('父类')->label('info');
+		$grid->column('cn_name', __('名称'))->editable();
+		// $grid->column('cn_name', '名称')->modal('国家地区', function ($model) {
+		// 	$nations = $model->countries()->take(10)->get()->map(function ($nations) {
+		// 		return $nations->only(['id', 'cname', 'name', 'country_code']);
+		// 	});
+		// 	return new Table(['id', '名称', '英文', '代码'], $nations->toArray());
+		// });
+		$grid->column('en_name', __('英文'))->editable();
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
@@ -61,7 +67,7 @@ class ContinentController extends AdminController {
 	protected function form() {
 		$form = new Form(new Continent);
 
-		$form->switch('parent_id', __('父 id'));
+		$form->select('parent_id', '父级名称')->options(Continent::where('parent_id', 0)->pluck('cn_name', 'id'));
 		$form->text('cn_name', __('名称'));
 		$form->text('en_name', __('英文'));
 
