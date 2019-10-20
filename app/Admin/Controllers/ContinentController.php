@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Widgets\Table;
 
 class ContinentController extends AdminController {
 	/**
@@ -26,13 +27,13 @@ class ContinentController extends AdminController {
 
 		$grid->column('id', __('Id'));
 		$grid->parentcontinent()->cn_name('父类')->label('info');
-		$grid->column('cn_name', __('名称'))->editable();
-		// $grid->column('cn_name', '名称')->modal('国家地区', function ($model) {
-		// 	$nations = $model->countries()->take(10)->get()->map(function ($nations) {
-		// 		return $nations->only(['id', 'cname', 'name', 'country_code']);
-		// 	});
-		// 	return new Table(['id', '名称', '英文', '代码'], $nations->toArray());
-		// });
+		// $grid->column('cn_name', __('名称'))->editable();
+		$grid->column('cn_name', '名称')->modal('国家地区', function ($model) {
+			$nations = $model->continentcountries()->take(10)->get()->map(function ($nations) {
+				return $nations->only(['id', 'cname', 'name', 'country_code']);
+			});
+			return new Table(['id', '名称', '英文', '代码'], $nations->toArray());
+		});
 		$grid->column('en_name', __('英文'))->editable();
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));

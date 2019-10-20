@@ -54,9 +54,13 @@ class CountryController extends AdminController {
 		$grid->column('full_name', __('全称英'))->limit(10);
 		$grid->column('full_cname', __('F中文全称'))->limit(10);
 		$grid->column('remark', __('备注'))->limit(30);
-		$grid->column('is_island', __('海岛'));
-		$grid->column('active', __('激活'));
-		$grid->column('promotion', __('推荐'));
+		$grid->column('is_island', __('海岛'))->bool();
+		$states = [
+		    'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+		    'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+		];
+		$grid->column('active', __('激活'))->switch($states);	
+		$grid->column('promotion', __('推荐'))->switch($states);
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
@@ -73,7 +77,11 @@ class CountryController extends AdminController {
 		$show = new Show(Country::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('continent_id', __('洲 id'));
+		// $show->field('continent_id', __('洲 id'));
+		$show->continent('国家地区', function ($continent) {
+			$continent->setResource('/admin/continents');
+			$continent->cn_name('大洲');
+		});
 		$show->field('name', __('名称'));
 		$show->field('lower_name', __('小写'));
 		$show->field('country_code', __('国家代码'));

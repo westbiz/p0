@@ -55,21 +55,15 @@ class WorldCityController extends AdminController {
 		$grid->column('cn_state', __('中文省/州'));
 		$grid->column('state_code', __('州代码'));
 		$grid->column('city_code', __('城市代码'));
-		$grid->column('active', __('激活'))->display(function ($active) {
-			return $active ? '是' : '否';
-		});
-		$grid->column('is_island', __('海岛'))->display(function ($active) {
-			return $active ? '是' : '否';
-		});
-		$grid->column('promotion', __('推荐'))->display(function ($active) {
-			return $active ? '是' : '否';
-		});
-		$grid->column('capital', __('首府'))->display(function ($active) {
-			return $active ? '是' : '否';
-		});
-		$grid->column('is_departure', __('出发地'))->display(function ($active) {
-			return $active ? '是' : '否';
-		});
+		$grid->column('is_island', __('海岛'))->bool();
+		$grid->column('promotion', __('推荐'))->bool();
+		$grid->column('capital', __('首府'))->bool();
+		$grid->column('is_departure', __('出发地'))->bool();
+		$states = [
+		    'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+		    'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+		];
+		$grid->column('active', __('激活'))->switch($states);		
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
@@ -89,7 +83,7 @@ class WorldCityController extends AdminController {
 		// $show->field('country_id', __('国家地区'));
 		$show->country('国家地区', function ($country) {
 			$country->setResource('/admin/countries');
-			$country->cname();
+			$country->cname('国家地区');
 		});
 		$show->field('state', __('省/州'));
 		$show->field('name', __('名称'));
