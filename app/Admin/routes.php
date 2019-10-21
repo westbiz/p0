@@ -20,4 +20,8 @@ Route::group([
 
 	$router->resource('worldcities', WorldCityController::class);
 
+	$router->resource('attributes', AttributeController::class);
+
+	$router->resource('attrvalues', AttrvalueController::class);
+
 });
