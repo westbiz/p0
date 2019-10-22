@@ -14,8 +14,8 @@ class Attrvalue extends Model {
 
 	//
 	//属于多个属性
-	public function catattr() {
-		return $this->belongsTo(Catattr::class, 'catattr_id', 'id');
+	public function attribute() {
+		return $this->belongsTo(Attribute::class, 'catattr_id', 'id');
 	}
 
 	//

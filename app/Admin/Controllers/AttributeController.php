@@ -26,11 +26,12 @@ class AttributeController extends AdminController {
 
 		$grid->column('id', __('Id'));
 		$grid->column('name', __('名称'));
-		$grid->column('parent_id', __('父类'));
+		$grid->column('parentattr.name', __('父类'))->setAttributes(['style' => 'color:red;']);
+		$grid->column('attrvalues', '属性值')->pluck('attrvalue')->label('info')->style('max-width:300px;line-height:1.5em;word-break:break-all;');
 		$grid->column('en_name', __('英文'));
-		$grid->column('isrequired', __('必须'));
+		// $grid->column('isrequired', __('必须'));
 		$grid->column('inputtype', __('控件'));
-		$grid->column('inputformat', __('格式'));
+		// $grid->column('inputformat', __('格式'));
 		// $grid->column('extra', __('扩展'));
 		$grid->column('order', __('排序'));
 		$states = [
@@ -38,7 +39,7 @@ class AttributeController extends AdminController {
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
 		$grid->column('active', __('激活'))->switch($states);
-		$grid->column('created_at', __('Created at'))->date('Y-m-d');
+		// $grid->column('created_at', __('Created at'))->date('Y-m-d');
 		// $grid->column('updated_at', __('Updated at'));
 
 		return $grid;

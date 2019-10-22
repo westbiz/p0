@@ -38,13 +38,13 @@ class Attribute extends Model {
 	}
 
 	//父子一对多
-	public function childcatattr() {
-		return $this->hasMany(Catattr::class, 'parent_id', 'id');
+	public function childattr() {
+		return $this->hasMany(Attribute::class, 'parent_id', 'id');
 	}
 
 	//值名反向
-	public function parentcatattr() {
-		return $this->belongsTo(Catattr::class, 'parent_id', 'id');
+	public function parentattr() {
+		return $this->belongsTo(Attribute::class, 'parent_id', 'id');
 	}
 
 	public function getExtraAttribute($extra) {

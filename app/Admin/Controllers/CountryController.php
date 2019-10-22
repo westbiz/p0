@@ -48,18 +48,18 @@ class CountryController extends AdminController {
 		$grid->column('cname', __('中文名'));
 		$grid->column('continent.cn_name', '洲名');
 		$grid->continentlocation('地理位置')->pluck('cn_name')->label('danger');
-		$grid->column('name', __('名称'));
+		$grid->column('name', __('英文名称'));
 		// $grid->column('lower_name', __('小写'))->limit(10);
-		$grid->column('country_code', __('代码'))->limit(10);
-		$grid->column('full_name', __('全称英'))->limit(10);
-		$grid->column('full_cname', __('F中文全称'))->limit(10);
-		$grid->column('remark', __('备注'))->limit(30);
+		$grid->column('country_code', __('国家地区代码'))->limit(10);
+		$grid->column('full_name', __('英文全称'))->limit(10);
+		$grid->column('full_cname', __('中文全称'))->limit(10);
+		// $grid->column('remark', __('概况'))->limit(30);
 		$grid->column('is_island', __('海岛'))->bool();
 		$states = [
-		    'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
-		    'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
-		$grid->column('active', __('激活'))->switch($states);	
+		$grid->column('active', __('激活'))->switch($states);
 		$grid->column('promotion', __('推荐'))->switch($states);
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
@@ -82,10 +82,10 @@ class CountryController extends AdminController {
 			$continent->setResource('/admin/continents');
 			$continent->cn_name('大洲');
 		});
-		$show->field('name', __('名称'));
+		$show->field('name', __('英文名称'));
 		$show->field('lower_name', __('小写'));
-		$show->field('country_code', __('国家代码'));
-		$show->field('full_name', __('全称英'));
+		$show->field('country_code', __('国家地区代码'));
+		$show->field('full_name', __('英文全称'));
 		$show->field('cname', __('中文名'));
 		$show->field('full_cname', __('中文全称'));
 		$show->field('remark', __('备注'));
@@ -108,14 +108,15 @@ class CountryController extends AdminController {
 
 		// $form->number('continent_id', __('洲 id'));
 		$form->text('cname', __('中文名'));
-		$form->text('name', __('名称'));
-		$form->select('continent_id', '洲名')->options(Continent::where('parent_id', 0)->pluck('cn_name', 'id'));
-		$form->text('lower_name', __('小写'));
-		$form->multipleSelect('continentlocation', '地理位置')->options(Continent::where('parent_id', '>', '0')->pluck('cn_name', 'id'));
-		$form->text('country_code', __('国家代码'));
-		$form->text('full_name', __('全称中'));
+		$form->text('name', __('英文名称'));
+		$form->text('full_name', __('英文全称'));
+		$form->text('country_code', __('国家地区代码'));
 		$form->text('full_cname', __('中文全称'));
-		$form->textarea('remark', __('备注'));
+		$form->text('lower_name', __('英全称小写'));
+		$form->select('continent_id', '洲名')->options(Continent::where('parent_id', 0)->pluck('cn_name', 'id'));
+		$form->multipleSelect('continentlocation', '地理位置')->options(Continent::where('parent_id', '>', '0')->pluck('cn_name', 'id'));
+
+		$form->textarea('remark', __('概况'));
 		$form->switch('is_island', __('海岛'));
 		$form->switch('active', __('激活'))->default(1);
 		$form->switch('promotion', __('推荐'));

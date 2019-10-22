@@ -26,7 +26,7 @@ class AttrvalueController extends AdminController {
 
 		$grid->column('id', __('Id'));
 		$grid->column('attrvalue', __('值名'));
-		$grid->column('catattr_id', __('属性'));
+		$grid->column('attribute.name', __('属性'))->label();
 		$grid->column('order', __('排序'));
 		$states = [
 			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
