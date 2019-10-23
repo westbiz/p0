@@ -23,4 +23,10 @@ class Attrvalue extends Model {
 	public function product() {
 		return $this->belongsToMany(Product::class, 'p_attrvalue_products', 'attrvalue_id', 'product_id');
 	}
+
+	//分类、属性 多对多
+	public function categories() {
+		return $this->belongsToMany(Category::class, 'p_catattr_category', 'catattr_id', 'category_id');
+	}
+
 }

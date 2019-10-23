@@ -43,6 +43,18 @@ class CountryController extends AdminController {
 			});
 		});
 
+		$grid->selector(function (Grid\Tools\Selector $selector) {
+			$selector->select('continent_id', '洲名', [
+				1 => '亚洲',
+				2 => '美洲',
+				3 => '非洲',
+				4 => '大洋洲',
+				5 => '南极洲',
+				6 => '北美洲',
+				7 => '南美洲',
+			]);
+		});
+
 		$grid->column('id', __('Id'));
 		// $grid->column('continent_id', __('洲 id'));
 		$grid->column('cname', __('中文名'));
