@@ -25,6 +25,13 @@ class AttributeController extends AdminController {
 	protected function grid() {
 		$grid = new Grid(new Attribute);
 
+		$grid->selector(function (Grid\Tools\Selector $selector) {
+			$selector->select('parent_id', '洲名', [
+				1 => '销售属性',
+				2 => '价格属性',
+			]);
+		});
+
 		$grid->column('id', __('Id'));
 		$grid->column('name', __('名称'));
 		$grid->column('parentattr.name', __('父类'))->label('primary');

@@ -29,9 +29,11 @@ class CategoryController extends AdminController {
 		$grid->column('parent_id', __('父 id'));
 		$grid->column('order', __('排序'));
 		$grid->column('description', __('说明'))->limit(30);
-		$grid->column('active', __('激活'))->display(function ($active) {
-			return $active ? '是' : '否';
-		});
+		$states = [
+			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+		];
+		$grid->column('active', __('激活'))->switch($states);
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 		// $grid->column('deleted_at', __('Deleted at'));

@@ -71,8 +71,8 @@ class CountryController extends AdminController {
 			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
-		$grid->column('active', __('激活'))->switch($states);
 		$grid->column('promotion', __('推荐'))->switch($states);
+		$grid->column('active', __('激活'))->switch($states);
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
