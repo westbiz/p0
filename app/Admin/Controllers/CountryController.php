@@ -63,7 +63,7 @@ class CountryController extends AdminController {
 		$grid->column('name', __('英文名称'));
 		// $grid->column('lower_name', __('小写'))->limit(10);
 		$grid->column('country_code', __('国家地区代码'))->limit(10);
-		$grid->column('full_name', __('英文全称'))->limit(10);
+		// $grid->column('full_name', __('英文全称'))->limit(10);
 		$grid->column('full_cname', __('中文全称'))->limit(10);
 		// $grid->column('remark', __('概况'))->limit(30);
 		$grid->column('is_island', __('海岛'))->bool();
