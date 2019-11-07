@@ -23,5 +23,7 @@ Route::group([
 	$router->resource('attributes', AttributeController::class);
 
 	$router->resource('attrvalues', AttrvalueController::class);
+	
+	$router->resource('destinations', DestinationController::class);
 
 });
