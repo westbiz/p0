@@ -28,10 +28,14 @@ class DestinationController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
-        $grid->column('country_id', __('Country id'));
-        $grid->column('city_id', __('City id'));
+        $grid->column('country_id', __('Country'));
+        $grid->column('city_id', __('City'));
         $grid->column('description', __('Description'));
-        $grid->column('promotion', __('Promotion'));
+        $states = [
+            'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+            'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+        ];
+        $grid->column('promotion', __('Promotion'))->switch($states);
         $grid->column('sort', __('Sort'));
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));
