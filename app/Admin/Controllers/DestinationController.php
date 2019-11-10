@@ -29,8 +29,8 @@ class DestinationController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('country_id', __('Country'));
-        $grid->column('city_id', __('City'));
-        $grid->column('description', __('Description'));
+        $grid->column('city.cn_name', __('City'));
+        $grid->column('description', __('Description'))->editable();
         $states = [
             'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
             'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
