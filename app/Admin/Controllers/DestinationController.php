@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Model\Destination;
+use App\Model\Country;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -29,7 +30,9 @@ class DestinationController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('country_id', __('Country'));
+        $grid->column('city_id',__('City'));
         $grid->column('city.cn_name', __('City'));
+        $grid->column('type',__('AreaTpye'))->editable();
         $grid->column('description', __('Description'))->editable();
         $states = [
             'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
@@ -77,7 +80,10 @@ class DestinationController extends AdminController
 
         $form->text('name', __('Name'));
         $form->text('country_id', __('Country id'));
+        $form->select('form',__('form'))->options(Country::pluck('cname','id'));
         $form->text('city_id', __('City id'));
+        $form->text('type',__('type'));
+        $form->keyValue('type');
         $form->text('description', __('Description'));
         $form->switch('promotion', __('Promotion'));
         $form->switch('sort', __('Sort'));
