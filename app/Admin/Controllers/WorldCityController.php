@@ -46,7 +46,15 @@ class WorldCityController extends AdminController {
 			});
 		});
 
+		$grid->selector(function (Grid\Tools\Selector $selector) {
+			$selector->select('active', '状态', [
+				0 => '未激活',
+				1 => '已激活',				
+			]);
+		});
+
 		$grid->column('id', __('Id'));
+		$grid->column('parent_id',__('父ID'));
 		$grid->column('cn_name', __('中文名'));
 		$grid->column('country.cname', __('国家地区'));
 		// $grid->column('state', __('州'));
@@ -63,7 +71,8 @@ class WorldCityController extends AdminController {
 		    'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
 		    'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
-		$grid->column('active', __('激活'))->switch($states);		
+		$grid->column('active', __('激活'))->switch($states);
+
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
@@ -114,8 +123,9 @@ class WorldCityController extends AdminController {
 		// $form->number('country_id', __('国家'));
 		$form->text('cn_name', __('中文名'));
 		$form->select('country_id', '国家地区')->options(Country::pluck('cname', 'id'));
+		$form->select('parent_id',__('父级'))->options(Worldcity::pluck('cn_name','id'))->default('0');
 		$form->text('state', __('省/州'));
-		$form->text('name', __('名称'));
+		$form->text('name', __('EN名称'));
 		$form->text('lower_name', __('小写'));
 		$form->text('cn_state', __('中文州/省'));
 		$form->text('state_code', __('州代码'));
