@@ -49,12 +49,16 @@ class WorldCityController extends AdminController {
 		$grid->selector(function (Grid\Tools\Selector $selector) {
 			$selector->select('active', '状态', [
 				0 => '未激活',
-				1 => '已激活',				
+				1 => '已激活',
+			]);
+			$selector->select('promotion', '推荐', [
+				0 => '未推荐',
+				1 => '推荐',
 			]);
 		});
 
 		$grid->column('id', __('Id'));
-		$grid->column('parent_id',__('父ID'));
+		$grid->column('parent_id', __('父ID'));
 		$grid->column('cn_name', __('中文名'));
 		$grid->column('country.cname', __('国家地区'));
 		// $grid->column('state', __('州'));
@@ -63,14 +67,14 @@ class WorldCityController extends AdminController {
 		$grid->column('cn_state', __('中文省/州'));
 		$grid->column('state_code', __('州代码'));
 		$grid->column('city_code', __('城市代码'));
+		$states = [
+			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+		];
 		$grid->column('is_island', __('海岛'))->bool();
-		$grid->column('promotion', __('推荐'))->bool();
 		$grid->column('capital', __('首府'))->bool();
 		$grid->column('is_departure', __('出发地'))->bool();
-		$states = [
-		    'on'  => ['value' => 1, 'text' => '是', 'color' => 'primary'],
-		    'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
-		];
+		$grid->column('promotion', __('推荐'))->switch($states);
 		$grid->column('active', __('激活'))->switch($states);
 
 		// $grid->column('created_at', __('Created at'));
@@ -123,7 +127,7 @@ class WorldCityController extends AdminController {
 		// $form->number('country_id', __('国家'));
 		$form->text('cn_name', __('中文名'));
 		$form->select('country_id', '国家地区')->options(Country::pluck('cname', 'id'));
-		$form->select('parent_id',__('父级'))->options(Worldcity::pluck('cn_name','id'))->default('0');
+		$form->select('parent_id', __('父级'))->options(Worldcity::pluck('cn_name', 'id'))->default('0');
 		$form->text('state', __('省/州'));
 		$form->text('name', __('EN名称'));
 		$form->text('lower_name', __('小写'));
