@@ -47,13 +47,17 @@ class WorldCityController extends AdminController {
 		});
 
 		$grid->selector(function (Grid\Tools\Selector $selector) {
-			$selector->select('active', '状态', [
-				0 => '未激活',
-				1 => '已激活',
-			]);
-			$selector->select('promotion', '推荐', [
-				0 => '未推荐',
-				1 => '推荐',
+			// $selector->select('active', '状态', [
+			// 	0 => '未激活',
+			// 	1 => '已激活',
+			// ]);
+			// $selector->select('promotion', '推荐', [
+			// 	0 => '未推荐',
+			// 	1 => '推荐',
+			// ]);
+			$selector->select('capital', '城市类型', [
+				0 => '城市',
+				1 => '首府',
 			]);
 		});
 
@@ -72,7 +76,7 @@ class WorldCityController extends AdminController {
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
 		$grid->column('is_island', __('海岛'))->bool();
-		$grid->column('capital', __('首府'))->bool();
+		$grid->column('capital', __('首府'))->switch($states);
 		$grid->column('is_departure', __('出发地'))->bool();
 		$grid->column('promotion', __('推荐'))->switch($states);
 		$grid->column('active', __('激活'))->switch($states);
