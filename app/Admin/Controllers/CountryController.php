@@ -53,6 +53,10 @@ class CountryController extends AdminController {
 				6 => '北美洲',
 				7 => '南美洲',
 			]);
+			$selector->select('promotion', '推荐', [
+				0 => '未推荐',
+				1 => '推荐',
+			]);
 		});
 
 		$grid->column('id', __('Id'));
