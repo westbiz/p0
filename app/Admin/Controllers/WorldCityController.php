@@ -81,6 +81,11 @@ class WorldCityController extends AdminController {
 		$grid->column('promotion', __('推荐'))->switch($states);
 		$grid->column('active', __('激活'))->switch($states);
 
+		$grid->column('目的地')->display(function ($destination) {
+
+			return "<a href='destinations/create?region=" . $this->country_id . "&worldcity=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
+		});
+
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 

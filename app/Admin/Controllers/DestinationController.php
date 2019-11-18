@@ -2,9 +2,9 @@
 
 namespace App\Admin\Controllers;
 
+use App\Model\Country;
 use App\Model\Destination;
 use App\Model\Worldcity;
-use App\Model\Country;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -45,7 +45,7 @@ class DestinationController extends AdminController {
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
 		$grid->column('promotion', __('Promotion'))->switch($states);
-		$grid->column('active',__('激活'))->switch($states);
+		$grid->column('active', __('激活'))->switch($states);
 		$grid->column('sort', __('Sort'));
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
@@ -83,10 +83,13 @@ class DestinationController extends AdminController {
 	protected function form() {
 		$form = new Form(new Destination);
 
+		$r_id = request()->get('region');
+		$c_id = request()->get('worldcity');
+
 		$form->text('name', __('Name'));
-		$form->select('country_id', __('Country Id'))->options(Country::pluck('cname', 'id'));
+		$form->select('country_id', __('Country Id'))->options(Country::pluck('cname', 'id'))->default($r_id);
 		// $form->select('form', __('form'))->options(Country::pluck('cname', 'id'));
-		$form->select('city_id', __('City Id'))->options(Worldcity::pluck('cn_name','id'));
+		$form->select('city_id', __('City Id'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
 		// $form->text('areatype', __('areatype'));
 		$form->select('areatype')->options([
 			'cities' => '城市',
