@@ -81,6 +81,8 @@ class WorldCityController extends AdminController {
 		$grid->column('promotion', __('推荐'))->switch($states);
 		$grid->column('active', __('激活'))->switch($states);
 
+		$grid->destinations()->pluck('name')->label()->style('max-width:200px;line-height:1.5em;word-break:break-all;');
+
 		$grid->column('目的地')->display(function ($destination) {
 
 			return "<a href='destinations/create?region=" . $this->country_id . "&worldcity=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
@@ -112,15 +114,35 @@ class WorldCityController extends AdminController {
 		$show->field('lower_name', __('小写'));
 		$show->field('cn_state', __('中文州/省'));
 		$show->field('cn_name', __('中文名'));
-		$show->field('state_code', __('州代码'));
-		$show->field('city_code', __('城市代码'));
-		$show->field('active', __('激活'));
-		$show->field('is_island', __('海岛'));
-		$show->field('promotion', __('推荐'));
-		$show->field('capital', __('首府'));
-		$show->field('is_departure', __('出发地'));
-		$show->field('created_at', __('Created at'));
-		$show->field('updated_at', __('Updated at'));
+		// $show->field('state_code', __('州代码'));
+		// $show->field('city_code', __('城市代码'));
+		// $show->field('active', __('激活'));
+		// $show->field('is_island', __('海岛'));
+		// $show->field('promotion', __('推荐'));
+		// $show->field('capital', __('首府'));
+		// $show->field('is_departure', __('出发地'));
+		// $show->field('created_at', __('Created at'));
+		// $show->field('updated_at', __('Updated at'));
+
+		$show->destinations('目的地', function ($destinations) {
+			$destinations->resource('/admin/destinations');
+
+			$destinations->id();
+			$destinations->name();
+			$destinations->country_id();
+			// $destinations->city_id', __('City'));
+			$destinations->city_id();
+			$destinations->areatype();
+			$destinations->description();
+			$states = [
+				'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+				'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+			];
+			$destinations->promotion()->switch($states);
+			$destinations->active();
+			$destinations->sort();
+
+		});
 
 		return $show;
 	}

@@ -21,4 +21,9 @@ class WorldCity extends Model {
 		return $this->belongsTo(Country::class, 'country_id', 'id');
 	}
 
+	// 一对多
+	public function destinations() {
+		return $this->hasMany(Destination::class, 'city_id', 'id');
+	}
+
 }
