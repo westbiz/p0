@@ -84,7 +84,7 @@ class DestinationController extends AdminController {
 		$form = new Form(new Destination);
 
 		$r_id = request()->get('region');
-		$c_id = request()->get('worldcity');
+		$c_id = request()->get('city_id');
 
 		$form->text('name', __('Name'));
 		$form->select('country_id', __('Country Id'))->options(Country::pluck('cname', 'id'))->default($r_id);

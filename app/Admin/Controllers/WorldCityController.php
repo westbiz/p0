@@ -85,7 +85,7 @@ class WorldCityController extends AdminController {
 
 		$grid->column('目的地')->display(function ($destination) {
 
-			return "<a href='destinations/create?region=" . $this->country_id . "&worldcity=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
+			return "<a href='destinations/create?region=" . $this->country_id . "&city_id=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
 		});
 
 		// $grid->column('created_at', __('Created at'));
@@ -103,17 +103,13 @@ class WorldCityController extends AdminController {
 	protected function detail($id) {
 		$show = new Show(WorldCity::findOrFail($id));
 
-		$show->field('id', __('Id'));
+		// $show->field('id', __('Id'));
 		// $show->field('country_id', __('国家地区'));
-		$show->country('国家地区', function ($country) {
-			$country->setResource('/admin/countries');
-			$country->cname('国家地区');
-		});
-		$show->field('state', __('省/州'));
-		$show->field('name', __('名称'));
-		$show->field('lower_name', __('小写'));
+		// $show->field('state', __('省/州'));
+		// $show->field('name', __('名称'));
+		// $show->field('lower_name', __('小写'));
 		$show->field('cn_state', __('中文州/省'));
-		$show->field('cn_name', __('中文名'));
+		$show->field('cn_name', __('中文名称'));
 		// $show->field('state_code', __('州代码'));
 		// $show->field('city_code', __('城市代码'));
 		// $show->field('active', __('激活'));
