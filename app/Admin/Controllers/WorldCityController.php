@@ -151,7 +151,8 @@ class WorldCityController extends AdminController {
 	protected function form() {
 		$form = new Form(new WorldCity);
 
-		// $form->number('country_id', __('国家'));
+		// $w_id = $form->model()->id;
+		// dd($w_id);
 		$form->text('cn_name', __('中文名'));
 		$form->select('country_id', '国家地区')->options(Country::pluck('cname', 'id'));
 		$form->select('parent_id', __('父级'))->options(Worldcity::pluck('cn_name', 'id'))->default('0');
@@ -166,6 +167,21 @@ class WorldCityController extends AdminController {
 		$form->switch('promotion', __('推荐'));
 		$form->switch('capital', __('首府'));
 		$form->switch('is_departure', __('出发地'));
+
+		$form->hasMany('destinations', '目的地', function (Form\NestedForm $form) {
+			$c_id = request()->route()->parameters('worldcities');
+			$form->text('name', '名称');
+			$form->select('country_id', '地区')->options(Country::pluck('cname', 'id'));
+			// $form->text('areatype');
+			$form->text('description', '描述');
+			// $states = [
+			// 	'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
+			// 	'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
+			// ];
+			// $form->text('promotion');
+			// $form->text('active');
+			// $form->text('sort');
+		});
 
 		return $form;
 	}
