@@ -34,11 +34,11 @@ class DestinationController extends AdminController {
 		});
 
 		$grid->column('id', __('Id'));
-		$grid->column('name', __('Name'));
+		$grid->column('name', __('Name'))->editable();
 		$grid->column('country.cname', __('Country'));
 		// $grid->column('city_id', __('City'));
 		$grid->column('city.cn_name', __('City'));
-		$grid->column('areatype', __('AreaTpye'))->using(['cities' => '城市区域', 'regions' => '国家地区']);
+		$grid->column('type_id', __('目的地类型'));
 		$grid->column('description', __('Description'))->editable();
 		$states = [
 			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
@@ -86,18 +86,15 @@ class DestinationController extends AdminController {
 		$r_id = request()->get('region');
 		$c_id = request()->get('city_id');
 
-		$form->text('name', __('Name'));
-		$form->select('country_id', __('Country Id'))->options(Country::pluck('cname', 'id'))->default($r_id);
+		$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'))->default($r_id);
 		// $form->select('form', __('form'))->options(Country::pluck('cname', 'id'));
-		$form->select('city_id', __('City Id'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
-		// $form->text('areatype', __('areatype'));
-		$form->select('areatype')->options([
-			'cities' => '城市',
-			'regions' => '国家地区',
-		]);
-		$form->text('description', __('Description'));
-		$form->switch('promotion', __('Promotion'));
-		$form->switch('sort', __('Sort'));
+		$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
+		$form->text('name', __('名称'))->required(2);
+		$form->text('type_id', __('类型'));
+
+		$form->text('description', __('描述'));
+		$form->switch('promotion', __('推荐'));
+		$form->switch('sort', __('排序'));
 
 		return $form;
 	}

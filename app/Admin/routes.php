@@ -28,4 +28,6 @@ Route::group([
 
 	$router->resource('sights', SightController::class);
 
+	$router->resource('destinationtypes', DestinationtypeController::class);
+
 });

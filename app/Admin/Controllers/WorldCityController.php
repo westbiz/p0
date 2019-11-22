@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Model\Country;
+use App\Model\Destinationtype;
 use App\Model\WorldCity;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -151,8 +152,7 @@ class WorldCityController extends AdminController {
 	protected function form() {
 		$form = new Form(new WorldCity);
 
-		// $w_id = $form->model()->id;
-		// dd($w_id);
+		// dd($form);
 		$form->text('cn_name', __('中文名'));
 		$form->select('country_id', '国家地区')->options(Country::pluck('cname', 'id'));
 		$form->select('parent_id', __('父级'))->options(Worldcity::pluck('cn_name', 'id'))->default('0');
@@ -172,7 +172,7 @@ class WorldCityController extends AdminController {
 			$c_id = request()->route()->parameters('worldcities');
 			$form->text('name', '名称');
 			$form->select('country_id', '地区')->options(Country::pluck('cname', 'id'));
-			// $form->text('areatype');
+			$form->select('destinationtype', '类型')->options(Destinationtype::pluck('name', 'id'));
 			$form->text('description', '描述');
 			// $states = [
 			// 	'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
