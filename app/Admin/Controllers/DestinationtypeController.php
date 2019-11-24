@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\DB;
+
 
 class DestinationtypeController extends AdminController {
 	/**
@@ -14,7 +16,7 @@ class DestinationtypeController extends AdminController {
 	 *
 	 * @var string
 	 */
-	protected $title = 'App\Model\Destinationtype';
+	protected $title = 'Destinationtype | 目的地类型';
 
 	/**
 	 * Make a grid builder.
@@ -25,10 +27,10 @@ class DestinationtypeController extends AdminController {
 		$grid = new Grid(new Destinationtype);
 
 		$grid->column('id', __('Id'));
-		$grid->column('name', __('Name'));
-		$grid->column('parent_id', __('Parent id'));
-		$grid->column('order', __('Order'));
-		$grid->column('description', __('Description'));
+		$grid->column('name', __('名称'))->editable();
+		$grid->column('parent_id', __('父类'));
+		$grid->column('order', __('排序'));
+		$grid->column('description', __('描述'))->editable();
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
@@ -44,13 +46,20 @@ class DestinationtypeController extends AdminController {
 	protected function detail($id) {
 		$show = new Show(Destinationtype::findOrFail($id));
 
-		$show->field('id', __('Id'));
-		$show->field('name', __('Name'));
-		$show->field('parent_id', __('Parent id'));
-		$show->field('order', __('Order'));
-		$show->field('description', __('Description'));
-		$show->field('created_at', __('Created at'));
-		$show->field('updated_at', __('Updated at'));
+		// $show->field('id', __('Id'));
+		$show->field('name', __('名称'));
+		$show->field('parent_id', __('父类'));
+		$show->field('order', __('排序'));
+		$show->field('description', __('描述'));
+		$show->childtypes('子类', function($childtypes){
+			$childtypes->resource('/admin/destinationtypes');
+			$childtypes->name();
+			$childtypes->parent_id();
+			$childtypes->order();
+			$childtypes->description();
+		});
+		// $show->field('created_at', __('Created at'));
+		// $show->field('updated_at', __('Updated at'));
 
 		return $show;
 	}
@@ -63,10 +72,14 @@ class DestinationtypeController extends AdminController {
 	protected function form() {
 		$form = new Form(new Destinationtype);
 
-		$form->text('name', __('Name'));
-		$form->number('parent_id', __('Parent id'));
-		$form->number('order', __('Order'));
-		$form->text('description', __('Description'));
+		$p_id = request()->get('parent_id');
+		// dd($p_id);
+		$form->text('name', __('名称'));
+		$form->select('parent_id','父类')->options(Destinationtype::where('parent_id',0)->pluck('name','id'))->default($p_id);
+		// $form->number('parent_id', __('Parent id'));
+		$next_id = DB::select("SHOW TABLE STATUS LIKE 'tx_destinationtype'");
+		$form->number('order', __('排序'))->value($next_id[0]->Auto_increment);
+		$form->text('description', __('描述'));
 
 		return $form;
 	}

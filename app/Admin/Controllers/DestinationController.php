@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Model\Country;
 use App\Model\Destination;
 use App\Model\Worldcity;
+use App\Model\Destinationtype;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -38,7 +39,7 @@ class DestinationController extends AdminController {
 		$grid->column('country.cname', __('Country'));
 		// $grid->column('city_id', __('City'));
 		$grid->column('city.cn_name', __('City'));
-		$grid->column('type_id', __('目的地类型'));
+		$grid->column('destinationtype.name', __('目的地类型'))->label('warning');
 		$grid->column('description', __('Description'))->editable();
 		$states = [
 			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
@@ -90,7 +91,7 @@ class DestinationController extends AdminController {
 		// $form->select('form', __('form'))->options(Country::pluck('cname', 'id'));
 		$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
 		$form->text('name', __('名称'))->required(2);
-		$form->text('type_id', __('类型'));
+		$form->multipleSelect('destinationtypes', '类型')->options(Destinationtype::pluck('name', 'id'));
 
 		$form->text('description', __('描述'));
 		$form->switch('promotion', __('推荐'));

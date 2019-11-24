@@ -23,9 +23,15 @@ class Destination extends Model {
 		return $this->belongsTo(Worldcity::class, 'city_id', 'id');
 	}
 
-	//
+	//一对多
 	public function destinationtype() {
 		return $this->belongsTo(Destinationtype::class, 'type_id', 'id');
+	}
+
+	// 多对多
+	public function destinationtypes() {
+		return $this->belongsToMany(Sight::class, 'tx_destinations_types','destination_id', 'type_id');
+
 	}
 
 }

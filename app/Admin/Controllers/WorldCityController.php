@@ -128,8 +128,8 @@ class WorldCityController extends AdminController {
 			$destinations->name();
 			$destinations->country_id();
 			// $destinations->city_id', __('City'));
-			$destinations->city_id();
-			$destinations->areatype();
+			$destinations->destinationtype('类型')->name()->label();
+			// $destinations->type_id();
 			$destinations->description();
 			$states = [
 				'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
@@ -172,7 +172,7 @@ class WorldCityController extends AdminController {
 			$c_id = request()->route()->parameters('worldcities');
 			$form->text('name', '名称');
 			$form->select('country_id', '地区')->options(Country::pluck('cname', 'id'));
-			$form->select('destinationtype', '类型')->options(Destinationtype::pluck('name', 'id'));
+			$form->select('type_id', '类型')->options(Destinationtype::pluck('name', 'id'));
 			$form->text('description', '描述');
 			// $states = [
 			// 	'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
