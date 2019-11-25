@@ -128,7 +128,8 @@ class WorldCityController extends AdminController {
 			$destinations->name();
 			$destinations->country_id();
 			// $destinations->city_id', __('City'));
-			$destinations->destinationtype('类型')->name()->label();
+			// $destinations->destinationtype('类型')->name()->label();
+			$destinations->types()->pluck('name')->label();
 			// $destinations->type_id();
 			$destinations->description();
 			$states = [
