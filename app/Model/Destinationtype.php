@@ -12,17 +12,15 @@ class Destinationtype extends Model {
 		'name', 'parent_id', 'order', 'description',
 	];
 
-	// 一对多
-	public function destinations() {
-		return $this->hasMany(Destination::class, 'type_id', 'id');
-	}
+	// // 一对多
+	// public function destinations() {
+	// 	return $this->hasMany(Destination::class, 'type_id', 'id');
+	// }
 
 	//目的地 多对多
-	public function types() {
-		return $this->belongsToMany(Destination::class, 'tx_destinations_types');
+	public function destinations() {
+		return $this->belongsToMany(Destination::class, 'tx_destinations_types', 'type_id', 'destination_id');
 	}
-
-
 
 	//一对多父类
 	public function childtypes() {

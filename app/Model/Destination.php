@@ -28,9 +28,9 @@ class Destination extends Model {
 		return $this->belongsTo(Destinationtype::class, 'type_id', 'id');
 	}
 
-	// 多对多
-	public function destinationtypes() {
-		return $this->belongsToMany(Sight::class, 'tx_destinations_types','destination_id', 'type_id');
+	// 类型 多对多
+	public function types() {
+		return $this->belongsToMany(Destinationtype::class, 'tx_destinations_types', 'destination_id', 'type_id');
 
 	}
 

@@ -9,7 +9,6 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\DB;
 
-
 class DestinationtypeController extends AdminController {
 	/**
 	 * Title for current resource.
@@ -48,15 +47,15 @@ class DestinationtypeController extends AdminController {
 
 		// $show->field('id', __('Id'));
 		$show->field('name', __('名称'));
-		$show->field('parent_id', __('父类'));
+		// $show->field('parent_id', __('父类'));
 		$show->field('order', __('排序'));
 		$show->field('description', __('描述'));
-		$show->childtypes('子类', function($childtypes){
+		$show->childtypes('子类', function ($childtypes) {
 			$childtypes->resource('/admin/destinationtypes');
-			$childtypes->name();
+			$childtypes->name()->editable();
 			$childtypes->parent_id();
 			$childtypes->order();
-			$childtypes->description();
+			$childtypes->description()->editable();
 		});
 		// $show->field('created_at', __('Created at'));
 		// $show->field('updated_at', __('Updated at'));
@@ -74,11 +73,12 @@ class DestinationtypeController extends AdminController {
 
 		$p_id = request()->get('parent_id');
 		// dd($p_id);
-		$form->text('name', __('名称'));
-		$form->select('parent_id','父类')->options(Destinationtype::where('parent_id',0)->pluck('name','id'))->default($p_id);
+		$form->select('parent_id', '父类')->options(Destinationtype::where('parent_id', 0)->pluck('name', 'id'))->default($p_id);
 		// $form->number('parent_id', __('Parent id'));
+		$form->text('name', __('名称'))->rules('required|min:2');
+
 		$next_id = DB::select("SHOW TABLE STATUS LIKE 'tx_destinationtype'");
-		$form->number('order', __('排序'))->value($next_id[0]->Auto_increment);
+		$form->number('order', __('排序'))->value($next_id[0]->Auto_increment)->readonly();
 		$form->text('description', __('描述'));
 
 		return $form;
