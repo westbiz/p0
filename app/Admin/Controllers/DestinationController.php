@@ -27,6 +27,15 @@ class DestinationController extends AdminController {
 	protected function grid() {
 		$grid = new Grid(new Destination);
 
+		$grid->filter(function ($filter) {
+			$filter->disableIdFilter();
+			$filter->column(3 / 4, function ($filter) {
+				$cities = Worldcity::orderBy('cn_name', 'asc')->pluck('cn_name', 'id');
+				$filter->expand()->equal('city_id', '地区|城市')->select($cities);
+
+			});
+		});
+
 		$grid->selector(function (Grid\Tools\Selector $selector) {
 			$selector->select('areatype', '城市类型', [
 				'cities' => '城市区域',
