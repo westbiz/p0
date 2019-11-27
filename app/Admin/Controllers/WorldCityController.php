@@ -43,7 +43,7 @@ class WorldCityController extends AdminController {
 					// $query->whereHas('country', function ($query){
 					//  $query->where('cname', 'like', "%{$this->input}%");
 					// });
-				}, '关键字');
+				}, '关键字搜索');
 			});
 		});
 
@@ -125,7 +125,7 @@ class WorldCityController extends AdminController {
 			$destinations->resource('/admin/destinations');
 
 			$destinations->id();
-			$destinations->name();
+			$destinations->name()->editable();
 			$destinations->country_id();
 			// $destinations->city_id', __('City'));
 			// $destinations->destinationtype('类型')->name()->label();

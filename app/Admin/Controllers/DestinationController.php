@@ -102,9 +102,9 @@ class DestinationController extends AdminController {
 		$form->text('name', __('名称'))->rules('required|min:2');
 		$form->multipleSelect('types', '类型')->options(Destinationtype::pluck('name', 'id'));
 
-		$form->text('description', __('描述'));
 		$form->switch('promotion', __('推荐'));
-		$form->switch('sort', __('排序'));
+		$form->number('sort', __('排序'));
+		$form->textarea('description', __('描述'))->rows(5);		
 
 		return $form;
 	}
