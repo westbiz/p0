@@ -104,7 +104,7 @@ class DestinationController extends AdminController {
 
 		$form->switch('promotion', __('推荐'));
 		$form->number('sort', __('排序'));
-		$form->textarea('description', __('描述'))->rows(5);		
+		$form->textarea('description', __('描述'))->rows(5);
 
 		return $form;
 	}
