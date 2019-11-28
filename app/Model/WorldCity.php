@@ -27,9 +27,10 @@ class WorldCity extends Model {
 		return $query->whereIn('cn_state', $areas)->where('active', 1);
 	}
 
-	//世界城市
+	//世界城市，除大陆及港澳台以外城市
 	public function scopeWorldcities() {
-		return $this->where('country_id', '<>', 101)->where('active', 1);
+		$areas = collect(['71','75','101','100']);
+		return $this->whereNotIn('country_id', $areas);
 	}
 
 	//一对多反向，国家
