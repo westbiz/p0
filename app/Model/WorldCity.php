@@ -23,8 +23,8 @@ class WorldCity extends Model {
 
 	// 港澳台
 	public function scopeGangaotai($query) {
-		$areas = collect(['香港', '澳门', '台湾']);
-		return $query->whereIn('cn_state', $areas)->where('active', 1);
+		$areas = collect(['71','75','100']);
+		return $query->whereIn('country_id', $areas)->where('active', 1);
 	}
 
 	//世界城市，除大陆及港澳台以外城市

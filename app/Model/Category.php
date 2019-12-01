@@ -11,4 +11,9 @@ class Category extends Model {
 	protected $fillable = [
 		'name', 'parent_id', 'order', 'description', 'active',
 	];
+
+	// 一对多
+	public function Products(){
+		return $this->hasMany(Product::class, 'category_id','id');
+	}
 }

@@ -96,9 +96,10 @@ class DestinationController extends AdminController {
 		$r_id = request()->get('region');
 		$c_id = request()->get('city_id');
 
+		$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
+
 		$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'))->default($r_id);
 		// $form->select('form', __('form'))->options(Country::pluck('cname', 'id'));
-		$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
 		$form->text('name', __('名称'))->rules('required|min:2')
 			->creationRules(['required', "unique:tx_destinations"]);
 		$form->multipleSelect('types', '类型')->options(Destinationtype::pluck('name', 'id'));

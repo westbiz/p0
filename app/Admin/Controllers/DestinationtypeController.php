@@ -25,10 +25,10 @@ class DestinationtypeController extends AdminController {
 	protected function grid() {
 		$grid = new Grid(new Destinationtype);
 
-		$grid->column('id', __('Id'));
+		$grid->column('id', __('Id'))->editable();
 		$grid->column('name', __('名称'))->editable();
-		$grid->column('parent_id', __('父类'));
-		$grid->column('order', __('排序'));
+		$grid->column('parenttype.name', __('父类'))->label();
+		// $grid->column('order', __('排序'));
 		$grid->column('description', __('描述'))->editable();
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
@@ -54,7 +54,7 @@ class DestinationtypeController extends AdminController {
 			$childtypes->resource('/admin/destinationtypes');
 			$childtypes->name()->editable();
 			$childtypes->parent_id();
-			$childtypes->order();
+			// $childtypes->order();
 			$childtypes->description()->editable();
 		});
 		// $show->field('created_at', __('Created at'));
@@ -77,8 +77,8 @@ class DestinationtypeController extends AdminController {
 		// $form->number('parent_id', __('Parent id'));
 		$form->text('name', __('名称'))->rules('required|min:2');
 
-		$next_id = DB::select("SHOW TABLE STATUS LIKE 'tx_destinationtype'");
-		$form->number('order', __('排序'))->value($next_id[0]->Auto_increment)->readonly();
+		// $next_id = DB::select("SHOW TABLE STATUS LIKE 'tx_destinationtype'");
+		// $form->number('order', __('排序'))->value($next_id[0]->Auto_increment)->readonly();
 		$form->text('description', __('描述'));
 
 		return $form;

@@ -9,7 +9,7 @@ class Destinationtype extends Model {
 	protected $table = 'tx_destinationtype';
 
 	protected $fillable = [
-		'name', 'parent_id', 'order', 'description',
+		'name', 'parent_id',  'description',
 	];
 
 	// // 一对多

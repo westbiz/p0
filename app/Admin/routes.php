@@ -30,4 +30,6 @@ Route::group([
 
 	$router->resource('destinationtypes', DestinationtypeController::class);
 
+	$router->resource('products', ProductController::class);
+
 });
