@@ -79,12 +79,7 @@ class WorldcityController extends Controller {
 	//选项过多，可通过ajax方式动态分页载入选项
 	public function getcities(Request $request) {
 		$q = $request->get('q');
-		// $sql = DB::table('t_world_cities')
-		// 	->select('cn_state', 'cn_name')
-		// 	->where('cn_state', 'like', "%$q%")
-		// 	->get();
-
-		return Worldcity::where('cn_state', $q)->paginate(null, ['id', DB::Raw('cn_state as label, cn_name as text')]);
+		return Worldcity::where('cn_state', $q)->paginate(null, ['id', DB::Raw('cn_name as text')]);
 	}
 
 	//选项过多，可通过ajax方式动态分页载入选项
