@@ -17,6 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	return $request->user();
 });
 
-Route::get('worldcities/getcities', 'WorldcityController@getcities')->name('getcities');
+Route::get('worldcities/getchinacities', 'WorldcityController@getchinacities')->name('getchinacities');
+
+Route::get('worldcities/getareasgroupby', 'WorldcityController@getareasgroupby')->name('getareasgroupby');
 
 Route::get('worldcities/all', 'WorldcityController@allcities')->name('allcities');

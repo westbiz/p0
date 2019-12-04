@@ -33,6 +33,12 @@ class WorldCity extends Model {
 		return $this->whereNotIn('country_id', $areas);
 	}
 
+	//预备删除
+	public function scopeXibei(){
+		$states = collect(['陕西','甘肃','青海','新疆','宁夏']);
+		return $this->whereIn('cn_state', $states);
+	}
+
 	//一对多反向，国家
 	public function country() {
 		return $this->belongsTo(Country::class, 'country_id', 'id');

@@ -77,9 +77,20 @@ class WorldcityController extends Controller {
 	}
 
 	//选项过多，可通过ajax方式动态分页载入选项
-	public function getcities(Request $request) {
+	public function getchinacities(Request $request) {
 		$q = $request->get('q');
-		return Worldcity::where('cn_state', $q)->paginate(null, ['id', DB::Raw('cn_name as text')]);
+		return Worldcity::chinacities()
+			->where('cn_state','like', "%$q%")
+			->orWhere('cn_name','like',"%$q%")
+			->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
+	}
+
+	//分组城市
+	public function getareasgroupby(Request $request) {
+		$q = $request->get('q');
+		return Worldcity::where('country_id', '=',$q)
+			->groupBy('cn_state')
+			->paginate(null, [ DB::Raw('cn_state as text')]);
 	}
 
 	//选项过多，可通过ajax方式动态分页载入选项

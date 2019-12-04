@@ -85,12 +85,12 @@ class ProductController extends AdminController {
 
 		$c_id = request()->get('category');
 		$form->text('name', __('Name'));
-		$form->select('id', 'city')->options(function ($id) {
+		$form->multipleSelect('id', 'city')->options(function ($id) {
 			$city = Worldcity::find($id);
 			if ($city) {
 				return [$city->id => $city->cn_name];
 			}
-		})->ajax('/api/v1/worldcities/getcities');
+		})->ajax('/api/v1/worldcities/getchinacities');
 		$form->image('avatar', __('Avatar'));
 		$form->text('pictureuri', __('Pictureuri'));
 		$form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
