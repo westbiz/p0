@@ -90,7 +90,7 @@ class WorldcityController extends Controller {
 		$q = $request->get('q');
 		return Worldcity::where('country_id', '=', $q)
 			->groupBy('cn_state')
-			->paginate(null, [DB::Raw('cn_state as label')]);
+			->paginate(null, [DB::Raw('cn_state as label,group_concat(id, cn_name) as text')]);
 	}
 
 	//选项过多，可通过ajax方式动态分页载入选项
