@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\WorldcityCollectionion;
+use App\Model\Worldcity;
 use Illuminate\Http\Request;
 
 /*
@@ -22,3 +24,7 @@ Route::get('worldcities/getchinacities', 'WorldcityController@getchinacities')->
 Route::get('worldcities/getareasgroupby', 'WorldcityController@getareasgroupby')->name('getareasgroupby');
 
 Route::get('worldcities/all', 'WorldcityController@allcities')->name('allcities');
+
+Route::get('worldcities', function () {
+	return new WorldcityCollectionion(Worldcity::all());
+});
