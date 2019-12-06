@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Resources\WorldcityCollectionion;
+use App\Http\Resources\CountryResource;
+use App\Http\Resources\WorldcityResource;
+use App\Model\Country;
 use App\Model\Worldcity;
 use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,5 +27,9 @@ Route::get('worldcities/getareasgroupby', 'WorldcityController@getareasgroupby')
 Route::get('worldcities/all', 'WorldcityController@allcities')->name('allcities');
 
 Route::get('worldcities', function () {
-	return new WorldcityCollectionion(Worldcity::all());
+	return WorldcityResource::collection(Worldcity::all());
+});
+
+Route::get('countries', function () {
+	return CountryResource::collection(Country::all());
 });

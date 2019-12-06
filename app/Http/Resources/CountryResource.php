@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WorldcityCollectionion extends JsonResource {
+class CountryResource extends JsonResource {
 	/**
 	 * Transform the resource into an array.
 	 *
@@ -14,8 +14,10 @@ class WorldcityCollectionion extends JsonResource {
 	public function toArray($request) {
 		// return parent::toArray($request);
 		return [
-			'data' => $this->collection,
-
+			// 'id' => $this->id,
+			'label' => $this->cname,
+			'options' => WorldcityResource::collection($this->cities),
 		];
+
 	}
 }
