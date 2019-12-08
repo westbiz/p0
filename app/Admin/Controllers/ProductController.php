@@ -5,6 +5,8 @@ namespace App\Admin\Controllers;
 use App\Model\Category;
 use App\Model\Product;
 use App\Model\Worldcity;
+use App\Http\Resources\CountryCollection;
+use App\Http\Resources\CountryResource;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -85,12 +87,14 @@ class ProductController extends AdminController {
 
 		$c_id = request()->get('category');
 		$form->text('name', __('Name'));
-		$form->multipleSelect('id', 'city')->options(function ($id) {
-			$city = Worldcity::find($id);
-			if ($city) {
-				return [$city->id => $city->cn_name];
-			}
-		})->ajax('/api/v1/worldcities/getchinacities');
+		// $form->multipleSelect('cid', 'city')->options(function ($id) {
+		// 	$city = Worldcity::find($id);
+		// 	if ($city) {
+		// 		return [$city->id => $city->cn_name];
+		// 	}
+		// })->ajax('/api/v1/worldcities/getcitiesbykeyword');
+		$form->select('id', 'city')->options()
+			->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
 		$form->image('avatar', __('Avatar'));
 		$form->text('pictureuri', __('Pictureuri'));
 		$form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);

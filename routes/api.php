@@ -20,16 +20,40 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	return $request->user();
 });
 
-Route::get('worldcities/getchinacities', 'WorldcityController@getchinacities')->name('getchinacities');
+Route::get('worldcities/getabroadcities', 'WorldcityController@getabroadcities')->name('getabroadcities');
 
-Route::get('worldcities/getareasgroupby', 'WorldcityController@getareasgroupby')->name('getareasgroupby');
+Route::get('worldcities/getabroadcitiesbycountry', 'WorldcityController@getabroadcitiesbycountry')->name('getabroadcitiesbycountry');
+
+
+Route::get('worldcities/getchinacitiesbykeyword', 'WorldcityController@getchinacitiesbykeyword')->name('getchinacitiesbykeyword');
+
+// // 准备删除
+// Route::get('worldcities/getareasgroupby', 'WorldcityController@getareasgroupby')->name('getareasgroupby');
+
 
 Route::get('worldcities/all', 'WorldcityController@allcities')->name('allcities');
 
+// 准备删除
 Route::get('worldcities', function () {
 	return WorldcityResource::collection(Worldcity::all());
 });
 
+// 准备删除
 Route::get('countries', function () {
-	return CountryResource::collection(Country::all());
+	return CountryResource::collection(Country::paginate(5));
 });
+
+
+// --resource
+// 准备删除
+Route::get('countries/getcitesbycountryresource','CountryController@getcitesbycountryresource')->name('getcitesbycountryresource');
+
+// CountryController
+Route::get('countries/getcountries','CountryController@getcountries')->name('getcountries');
+
+// 准备删除
+Route::get('countries/getcountrycities','CountryController@getcountrycities')->name('getcountrycities');
+
+
+
+Route::get('countries/getcountrywithcities','CountryController@getcountrywithcities')->name('getcountrywithcities');
