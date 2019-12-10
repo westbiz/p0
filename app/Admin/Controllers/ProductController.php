@@ -2,11 +2,8 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Category;
 use App\Model\Product;
 use App\Model\Worldcity;
-use App\Http\Resources\CountryCollection;
-use App\Http\Resources\CountryResource;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -87,25 +84,31 @@ class ProductController extends AdminController {
 
 		$c_id = request()->get('category');
 		$form->text('name', __('Name'));
+		// 国内
 		// $form->multipleSelect('cid', 'city')->options(function ($id) {
 		// 	$city = Worldcity::find($id);
 		// 	if ($city) {
 		// 		return [$city->id => $city->cn_name];
 		// 	}
-		// })->ajax('/api/v1/worldcities/getcitiesbykeyword');
-		$form->select('id', 'city')->options()
-			->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
-		$form->image('avatar', __('Avatar'));
-		$form->text('pictureuri', __('Pictureuri'));
-		$form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
-		$form->number('day', __('Day'));
-		$form->number('night', __('Night'));
-		$form->switch('star', __('Star'));
-		$form->text('summary', __('Summary'));
-		$form->text('route', __('Route'));
-		$form->textarea('content', __('Content'));
-		$form->switch('active', __('Active'));
-		$form->text('attributes', __('Attributes'));
+		// })->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
+		// //国外
+		$groups = Worldcity::with('country')->first()->toArray();
+
+		dd($groups);
+		$form->select('id', 'city')->options()->groups($groups);
+		// $form->select('id', 'city')->options()
+		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
+		// $form->image('avatar', __('Avatar'));
+		// $form->text('pictureuri', __('Pictureuri'));
+		// $form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
+		// $form->number('day', __('Day'));
+		// $form->number('night', __('Night'));
+		// $form->switch('star', __('Star'));
+		// $form->text('summary', __('Summary'));
+		// $form->text('route', __('Route'));
+		// $form->textarea('content', __('Content'));
+		// $form->switch('active', __('Active'));
+		// $form->text('attributes', __('Attributes'));
 
 		return $form;
 	}
