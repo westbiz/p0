@@ -3,7 +3,9 @@
 namespace App\Admin\Controllers;
 
 use App\Model\Product;
+use App\Model\Country;
 use App\Model\Worldcity;
+use App\Http\Resources\CountryResource;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -92,7 +94,7 @@ class ProductController extends AdminController {
 		// 	}
 		// })->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 		// //国外
-		$groups = Worldcity::with('country')->first()->toArray();
+		$groups = CountryResource::collection(Country::all());
 
 		dd($groups);
 		$form->select('id', 'city')->options()->groups($groups);
