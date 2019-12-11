@@ -62,18 +62,18 @@ class CountryController extends Controller {
 
 	public function getcountrywithcities(Request $request) {
 		$q = $request->get('q');
-		return DB::table('t_countries as country')
-			->leftjoin('t_world_cities as cities', 'country.id', '=', 'cities.country_id')
-			->select('country.cname as label', 'cities.id', 'cities.cn_name as text')
-			->groupBy('cities.cn_name')
+		return Country::select('id','cname as label')
+			->with(['cities'=>function($query) use($q){
+				return $query->select('country_id','cn_name as text');
+			}])
 			->get()->toArray();
-		// ->paginate(null, ['id', 'cname as text']);
+		// ->paginate();
 	}
 
 	// 准备删除 resource
 	public function getcitesbycountryresource() {
 		// $q = $request->get('q');
-		// return CountryResource::collection(Country::all());
-		return new CountryResource(Country::find(101));
+		return CountryResource::collection(Country::all())->toArray();
+		// return new CountryResource(Country::find(101));
 	}
 }
