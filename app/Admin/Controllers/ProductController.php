@@ -2,15 +2,15 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Product;
-use App\Model\Country;
-use App\Model\Worldcity;
 use App\Http\Resources\CountryResource;
+use App\Model\Country;
+use App\Model\Product;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
+//
 class ProductController extends AdminController {
 	/**
 	 * Title for current resource.
@@ -94,9 +94,9 @@ class ProductController extends AdminController {
 		// 	}
 		// })->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 		// //国外
-		$groups = CountryResource::collection(Country::all());
+		$groups = CountryResource::collection(Country::all())->toJson();
 
-		dd($groups);
+		// dd($groups);
 		$form->select('id', 'city')->options()->groups($groups);
 		// $form->select('id', 'city')->options()
 		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');

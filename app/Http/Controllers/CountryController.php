@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CountryResource;
 use App\Model\Country;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
+//
 class CountryController extends Controller {
 	/**
 	 * Display a listing of the resource.
@@ -60,8 +62,12 @@ class CountryController extends Controller {
 
 	public function getcountrywithcities(Request $request) {
 		$q = $request->get('q');
-		return Country::with('cities')->where('cname', '=', $q)
-			->paginate(null, ['id', 'cname as text']);
+		return DB::table('t_countries as country')
+			->leftjoin('t_world_cities as cities', 'country.id', '=', 'cities.country_id')
+			->select('country.cname as label', 'cities.id', 'cities.cn_name as text')
+			->groupBy('cities.cn_name')
+			->get()->toArray();
+		// ->paginate(null, ['id', 'cname as text']);
 	}
 
 	// 准备删除 resource
