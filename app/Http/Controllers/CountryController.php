@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CountryResource;
 use App\Model\Country;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 //
 class CountryController extends Controller {
@@ -62,12 +61,28 @@ class CountryController extends Controller {
 
 	public function getcountrywithcities(Request $request) {
 		$q = $request->get('q');
-		return Country::select('id','cname as label')
-			->with(['cities'=>function($query) use($q){
-				return $query->select('country_id','cn_name as text');
-			}])
-			->get()->toArray();
+		$wcities = Country::
+			with(['cities' => function ($query) {
+			$query->select('id', 'cn_name as text', 'country_id');
+		}])
+			->select('id', 'cname')
+			->get();
+		return $this->transformer($wcities);
 		// ->paginate();
+	}
+
+	protected function transformer($items) {
+		$data = [];
+		foreach ($items ?? [] as $item) {
+			$data[] = [
+				'id' => $item->id,
+				'label' => $item->cname,
+				// 'text' => $item->cn_name,
+				// 'country' => $item->country_id,
+				'options' => $item->cities,
+			];
+		}
+		return $data;
 	}
 
 	// 准备删除 resource
