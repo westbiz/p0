@@ -96,7 +96,7 @@ class ProductController extends AdminController {
 		// //国外
 		$groups = CountryResource::collection(Country::all());
 
-		dd($groups);
+		// dd($groups);
 		$form->select('id', 'city')->options()->groups($groups);
 		// $form->select('id', 'city')->options()
 		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');

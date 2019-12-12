@@ -88,7 +88,7 @@ class CountryController extends Controller {
 	// 准备删除 resource
 	public function getcitesbycountryresource() {
 		// $q = $request->get('q');
-		return CountryResource::collection(Country::all())->toArray();
-		// return new CountryResource(Country::find(101));
+		// return CountryResource::collection(Country::all())->toArray();
+		return new CountryResource(Country::find(101));
 	}
 }
