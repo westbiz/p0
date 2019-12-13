@@ -31,4 +31,24 @@ class Country extends Model {
 	public function cities() {
 		return $this->hasMany(Worldcity::class, 'country_id', 'id');
 	}
+
+	//一对多，worldcities
+	public function options() {
+		return $this->hasMany(Worldcity::class);
+	}
+
+	protected function transformer($items) {
+		$data = [];
+		foreach ($items ?? [] as $item) {
+			$data[] = [
+				'id' => $item->id,
+				'label' => $item->cname,
+				// 'text' => $item->cn_name,
+				// 'country' => $item->country_id,
+				'options' => $item->cities,
+			];
+		}
+		return $data;
+	}
+
 }

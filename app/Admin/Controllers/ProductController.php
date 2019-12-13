@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Http\Resources\CountryResource;
 use App\Model\Country;
 use App\Model\Product;
 use Encore\Admin\Controllers\AdminController;
@@ -94,7 +93,12 @@ class ProductController extends AdminController {
 		// 	}
 		// })->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 		// //国外
-		$groups = CountryResource::collection(Country::all());
+		$groups = Country::
+			with(['options' => function ($query) {
+			$query->select('id', 'cn_name as text', 'country_id');
+		}])
+			->select('cname as label')
+			->get()->toArray();
 
 		// dd($groups);
 		$form->select('id', 'city')->options()->groups($groups);

@@ -75,9 +75,9 @@ class CountryController extends Controller {
 		$data = [];
 		foreach ($items ?? [] as $item) {
 			$data[] = [
-				'id' => $item->id,
+				// 'id' => $item->id,
 				'label' => $item->cname,
-				// 'text' => $item->cn_name,
+				// 'text' => $item->text,
 				// 'country' => $item->country_id,
 				'options' => $item->cities,
 			];
