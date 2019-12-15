@@ -97,10 +97,37 @@ class ProductController extends AdminController {
 			with(['options' => function ($query) {
 			$query->select('id', 'cn_name as text', 'country_id');
 		}])
-			->select('cname as label')
+			->select('cname as label','id')
 			->get()->toArray();
 
-		// dd($groups);
+		// foreach ($groups as $group) {
+		// 	echo $group->cities->text;
+		// 	echo "<br />";
+		// 	echo $group->cities->id;
+		// }
+
+
+		// $groups = Country::
+		// 	with(['options' => function ($query) {
+		// 	$query->select('id', 'cn_name as text', 'country_id');
+		// }])
+		// 	->select('cname as label','id')
+		// 	->get( function($items) {
+		// 		$data = [];
+		// 		foreach ($items ?? [] as $item) {
+		// 			$data[] = [
+		// 				// 'id' => $this->$item->id,
+		// 				'label' => $this->$item->cname,
+		// 				// 'text' => $item->text,
+		// 				// 'country' => $item->country_id,
+		// 				'options' => $this->$item->cities,
+		// 			];
+		// 		}
+		// 		return $data;
+		// 	})
+		// 	->toArray();	
+
+		dd($groups);
 		$form->select('id', 'city')->options()->groups($groups);
 		// $form->select('id', 'city')->options()
 		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');

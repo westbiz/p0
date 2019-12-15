@@ -14,7 +14,7 @@ class CountryResource extends JsonResource {
 	public function toArray($request) {
 		// return parent::toArray($request);
 		return [
-			'id' => $this->id,
+			// 'id' => $this->id,
 			'label' => $this->cname,
 			'options' => WorldcityResource::collection($this->cities),
 		];
