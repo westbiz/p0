@@ -93,18 +93,23 @@ class ProductController extends AdminController {
 		// 	}
 		// })->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 		// //国外
-		$groups = Country::
-			with(['options' => function ($query) {
-			$query->select('id', 'cn_name as text', 'country_id');
+		$groups = Country::select('cname','id')
+			->with(['options' => function ($query) {
+			$query->select(['id', 'cn_name as text', 'country_id']);
 		}])
-			->select('cname as label','id')
-			->get()->toArray();
+			->get();
 
-		// foreach ($groups as $group) {
-		// 	echo $group->cities->text;
-		// 	echo "<br />";
-		// 	echo $group->cities->id;
-		// }
+		$data = [];
+		foreach ($groups ?? [] as $groups) {
+			$data[] = [
+				// 'id' => $groups->id,
+				'label' => $groups->cname,
+				// 'text' => $groups->text,
+				// 'country' => $groups->country_id,
+				'options' => $groups->options,
+			];
+		}
+		// return $data;
 
 
 		// $groups = Country::
@@ -127,8 +132,8 @@ class ProductController extends AdminController {
 		// 	})
 		// 	->toArray();	
 
-		dd($groups);
-		$form->select('id', 'city')->options()->groups($groups);
+		// var_dump($data);
+		$form->select('id', 'city')->options()->options()->groups($data);
 		// $form->select('id', 'city')->options()
 		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
 		// $form->image('avatar', __('Avatar'));

@@ -34,7 +34,8 @@ class Country extends Model {
 
 	//一对多，worldcities
 	public function options() {
-		return $this->hasMany(Worldcity::class);
+		return $this->hasMany(Worldcity::class, 'country_id', 'id')
+		->select(array('id', 'cn_name as text'));
 	}
 
 	protected function transformer($items) {
