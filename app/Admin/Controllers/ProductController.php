@@ -133,7 +133,7 @@ class ProductController extends AdminController {
 		// 	->toArray();	
 
 		// var_dump($data);
-		$form->select('id', 'city')->options()->options()->groups($data);
+		$form->select('id', 'city')->options()->groups($data);
 		// $form->select('id', 'city')->options()
 		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
 		// $form->image('avatar', __('Avatar'));
