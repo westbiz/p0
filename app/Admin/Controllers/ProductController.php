@@ -2,8 +2,8 @@
 
 namespace App\Admin\Controllers;
 
-use App\Model\Country;
 use App\Model\Product;
+use App\Model\Worldcity;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -86,56 +86,26 @@ class ProductController extends AdminController {
 		$c_id = request()->get('category');
 		$form->text('name', __('Name'));
 		// 国内
-		// $form->multipleSelect('cid', 'city')->options(function ($id) {
-		// 	$city = Worldcity::find($id);
-		// 	if ($city) {
-		// 		return [$city->id => $city->cn_name];
-		// 	}
-		// })->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
-		// //国外
-		$groups = Country::select('cname','id')
-			->with(['options' => function ($query) {
-			$query->select(['id', 'cn_name as text', 'country_id']);
-		}])
-			->get();
+		$form->multipleSelect('cid', 'city')->options(function ($id) {
+			$city = Worldcity::find($id);
+			if ($city) {
+				return [$city->id => $city->cn_name];
+			}
+		})->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 
-		$data = [];
-		foreach ($groups ?? [] as $groups) {
-			$data[] = [
-				// 'id' => $groups->id,
-				'label' => $groups->cname,
-				// 'text' => $groups->text,
-				// 'country' => $groups->country_id,
-				'options' => $groups->options,
-			];
-		}
-		// return $data;
+		// //select,groups---------------------
+		// $groups = Country::select('cname', 'id')->get();
+		// $data = [];
+		// foreach ($groups as $group) {
+		// 	$data[] = [
+		// 		'label' => $group->cname,
+		// 		'options' => $group->options()->pluck('cn_name', 'id'),
+		// 	];
+		// }
+		// $form->select('id', 'city')->options()->groups($data);
 
-
-		// $groups = Country::
-		// 	with(['options' => function ($query) {
-		// 	$query->select('id', 'cn_name as text', 'country_id');
-		// }])
-		// 	->select('cname as label','id')
-		// 	->get( function($items) {
-		// 		$data = [];
-		// 		foreach ($items ?? [] as $item) {
-		// 			$data[] = [
-		// 				// 'id' => $this->$item->id,
-		// 				'label' => $this->$item->cname,
-		// 				// 'text' => $item->text,
-		// 				// 'country' => $item->country_id,
-		// 				'options' => $this->$item->cities,
-		// 			];
-		// 		}
-		// 		return $data;
-		// 	})
-		// 	->toArray();	
-
-		// var_dump($data);
-		$form->select('id', 'city')->options()->groups($data);
 		// $form->select('id', 'city')->options()
-		// ->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
+		// 	->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
 		// $form->image('avatar', __('Avatar'));
 		// $form->text('pictureuri', __('Pictureuri'));
 		// $form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
