@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Model\Worldcity;
-use App\Model\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,9 +106,9 @@ class WorldcityController extends Controller {
 	// // 准备删除 分组城市
 	public function getareasgroupby(Request $request) {
 		$q = $request->get('q');
-		return Worldcity::where('country_id',$q)->select('country_id as label','id','cn_name as text')
+		return Worldcity::where('country_id', $q)->select('country_id as label', 'id', 'cn_name as text')
 		// ->groupBy('country_id')
-		->get()->toArray();
+			->get()->toArray();
 		// ->paginate(null, [DB::Raw('cname as label, cn_name as text')]);
 	}
 

@@ -23,19 +23,19 @@ class WorldCity extends Model {
 
 	// 港澳台
 	public function scopeGangaotai($query) {
-		$areas = collect(['71','75','100']);
+		$areas = collect(['71', '75', '100']);
 		return $query->whereIn('country_id', $areas)->where('active', 1);
 	}
 
 	//世界城市，除大陆及港澳台以外城市
 	public function scopeWorldcities() {
-		$areas = collect(['71','75','101','100']);
+		$areas = collect(['71', '75', '101', '100']);
 		return $this->whereNotIn('country_id', $areas);
 	}
 
 	//预备删除
-	public function scopeXibei(){
-		$states = collect(['陕西','甘肃','青海','新疆','宁夏']);
+	public function scopeXibei() {
+		$states = collect(['陕西', '甘肃', '青海', '新疆', '宁夏']);
 		return $this->whereIn('cn_state', $states);
 	}
 
@@ -44,9 +44,20 @@ class WorldCity extends Model {
 		return $this->belongsTo(Country::class, 'country_id', 'id');
 	}
 
+	//一对多，worldcities
+	public function options() {
+		return $this->hasMany(Worldcity::class, 'country_id', 'id')
+			->select('id', 'cn_name');
+	}
+
 	// 一对多
 	public function destinations() {
 		return $this->hasMany(Destination::class, 'city_id', 'id');
+	}
+
+	// 目的地城市，多对多
+	public function products() {
+		return $this->belongsToMany(Product::class, 'tx_city_products', 'product_id', 'city_id');
 	}
 
 }
