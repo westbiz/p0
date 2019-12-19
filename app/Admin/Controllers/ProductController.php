@@ -86,12 +86,8 @@ class ProductController extends AdminController {
 		$c_id = request()->get('category');
 		$form->text('name', __('Name'));
 		// 国内
-		$form->multipleSelect('cid', 'city')->options(function ($id) {
-			$city = Worldcity::find($id);
-			if ($city) {
-				return [$city->id => $city->cn_name];
-			}
-		})->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
+		$form->multipleSelect('cities', 'city')->options(Worldcity::pluck('cn_name','id'))
+			->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 
 		// //select,groups---------------------
 		// $groups = Country::select('cname', 'id')->get();

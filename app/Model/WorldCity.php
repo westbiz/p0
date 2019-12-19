@@ -57,7 +57,7 @@ class WorldCity extends Model {
 
 	// 目的地城市，多对多
 	public function products() {
-		return $this->belongsToMany(Product::class, 'tx_city_products', 'product_id', 'city_id');
+		return $this->belongsToMany(Product::class, 'tx_city_products', 'city_id', 'product_id');
 	}
 
 }

@@ -85,6 +85,7 @@ class WorldcityController extends Controller {
 			->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
 	}
 
+	// 国外
 	public function getabroadcities(Request $request) {
 		$q = $request->get('q');
 		return Worldcity::worldcities()
