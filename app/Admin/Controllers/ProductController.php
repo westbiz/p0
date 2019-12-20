@@ -2,8 +2,8 @@
 
 namespace App\Admin\Controllers;
 
+use App\Model\Category;
 use App\Model\Product;
-use App\Model\Worldcity;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -86,8 +86,8 @@ class ProductController extends AdminController {
 		$c_id = request()->get('category');
 		$form->text('name', __('Name'));
 		// 国内
-		$form->multipleSelect('cities', 'city')->options(Worldcity::pluck('cn_name','id'))
-			->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
+		// $form->multipleSelect('cities', 'city')->options(Worldcity::pluck('cn_name', 'id'))
+		// 	->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
 
 		// //select,groups---------------------
 		// $groups = Country::select('cname', 'id')->get();
@@ -98,21 +98,22 @@ class ProductController extends AdminController {
 		// 		'options' => $group->options()->pluck('cn_name', 'id'),
 		// 	];
 		// }
-		// $form->select('id', 'city')->options()->groups($data);
+		// $form->select('cities', 'city')->options()->groups($data);
 
-		// $form->select('id', 'city')->options()
-		// 	->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
-		// $form->image('avatar', __('Avatar'));
-		// $form->text('pictureuri', __('Pictureuri'));
-		// $form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
-		// $form->number('day', __('Day'));
-		// $form->number('night', __('Night'));
-		// $form->switch('star', __('Star'));
-		// $form->text('summary', __('Summary'));
-		// $form->text('route', __('Route'));
-		// $form->textarea('content', __('Content'));
-		// $form->switch('active', __('Active'));
-		// $form->text('attributes', __('Attributes'));
+		// 国家地区
+		$form->multipleSelect('cities', 'city')->options()
+			->ajax('/api/v1/worldcities/getabroadcitiesbycountry');
+		$form->image('avatar', __('Avatar'));
+		$form->text('pictureuri', __('Pictureuri'));
+		$form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
+		$form->number('day', __('Day'));
+		$form->number('night', __('Night'));
+		$form->switch('star', __('Star'));
+		$form->text('summary', __('Summary'));
+		$form->text('route', __('Route'));
+		$form->textarea('content', __('Content'));
+		$form->switch('active', __('Active'));
+		$form->text('attributes', __('Attributes'));
 
 		return $form;
 	}

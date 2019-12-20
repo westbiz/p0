@@ -26,9 +26,6 @@ Route::get('worldcities/getabroadcitiesbycountry', 'WorldcityController@getabroa
 
 Route::get('worldcities/getchinacitiesbykeyword', 'WorldcityController@getchinacitiesbykeyword')->name('getchinacitiesbykeyword');
 
-// // 准备删除
-Route::get('worldcities/getareasgroupby', 'WorldcityController@getareasgroupby')->name('getareasgroupby');
-
 Route::get('worldcities/all', 'WorldcityController@allcities')->name('allcities');
 
 // 准备删除

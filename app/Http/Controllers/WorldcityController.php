@@ -86,13 +86,13 @@ class WorldcityController extends Controller {
 	}
 
 	// 国外
-	public function getabroadcities(Request $request) {
-		$q = $request->get('q');
-		return Worldcity::worldcities()
-			->where('cn_state', 'like', "%$q%")
-			->orWhere('cn_name', 'like', "%$q%")
-			->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
-	}
+	// public function getabroadcities(Request $request) {
+	// 	$q = $request->get('q');
+	// 	return Worldcity::worldcities()
+	// 		->where('cn_state', 'like', "%$q%")
+	// 		->orWhere('cn_name', 'like', "%$q%")
+	// 		->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
+	// }
 
 	public function getabroadcitiesbycountry(Request $request) {
 		$q = $request->get('q');
@@ -101,16 +101,8 @@ class WorldcityController extends Controller {
 			->select('worldcity.id', DB::Raw('concat(country.cname," 》 ",worldcity.cn_name) as text'))
 			->where('country.cname', 'like', "%$q%")
 			->orWhere('worldcity.cn_name', 'like', "%$q%")
+			->orWhere('worldcity.cn_state', 'like', "%$q%")
 			->paginate();
-	}
-
-	// // 准备删除 分组城市
-	public function getareasgroupby(Request $request) {
-		$q = $request->get('q');
-		return Worldcity::where('country_id', $q)->select('country_id as label', 'id', 'cn_name as text')
-		// ->groupBy('country_id')
-			->get()->toArray();
-		// ->paginate(null, [DB::Raw('cname as label, cn_name as text')]);
 	}
 
 	//选项过多，可通过ajax方式动态分页载入选项
