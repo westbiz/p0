@@ -29,8 +29,6 @@ class WorldCityController extends AdminController {
 		$grid->filter(function ($filter) {
 			$filter->disableIdFilter();
 			$filter->column(3 / 4, function ($filter) {
-				$continents = Country::orderBy('cname', 'asc')->pluck('cname', 'id');
-				$filter->expand()->equal('country_id', '按国家|地区')->select($continents);
 				$filter->expand()->where(function ($query) {
 					$query->where('cn_name', 'like', "%{$this->input}%")
 						->orWhere('cn_state', 'like', "%{$this->input}%")
@@ -45,6 +43,8 @@ class WorldCityController extends AdminController {
 					// });
 				}, '关键字搜索');
 			});
+			$continents = Country::orderBy('cname', 'asc')->pluck('cname', 'id');
+			$filter->expand()->equal('country_id', '按国家|地区')->select($continents);
 		});
 
 		$grid->selector(function (Grid\Tools\Selector $selector) {

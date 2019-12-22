@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	return $request->user();
 });
 
-Route::get('worldcities/getabroadcities', 'WorldcityController@getabroadcities')->name('getabroadcities');
+Route::get('worldcities/getcitieswithdesinationwords', 'WorldcityController@getcitieswithdesinationwords')->name('getcitieswithdesinationwords');
 
 Route::get('worldcities/getabroadcitiesbycountry', 'WorldcityController@getabroadcitiesbycountry')->name('getabroadcitiesbycountry');
 

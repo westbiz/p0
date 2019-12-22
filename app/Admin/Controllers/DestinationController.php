@@ -36,12 +36,12 @@ class DestinationController extends AdminController {
 			});
 		});
 
-		$grid->selector(function (Grid\Tools\Selector $selector) {
-			$selector->select('areatype', '城市类型', [
-				'cities' => '城市区域',
-				'regions' => '国家地区',
-			]);
-		});
+		// $grid->selector(function (Grid\Tools\Selector $selector) {
+		// 	$selector->select('areatype', '城市类型', [
+		// 		'cities' => '城市区域',
+		// 		'regions' => '国家地区',
+		// 	]);
+		// });
 
 		$grid->column('id', __('Id'));
 		$grid->column('name', __('Name'))->editable();

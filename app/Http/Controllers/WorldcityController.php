@@ -85,14 +85,18 @@ class WorldcityController extends Controller {
 			->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
 	}
 
-	// 国外
-	// public function getabroadcities(Request $request) {
-	// 	$q = $request->get('q');
-	// 	return Worldcity::worldcities()
-	// 		->where('cn_state', 'like', "%$q%")
-	// 		->orWhere('cn_name', 'like', "%$q%")
-	// 		->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
-	// }
+	// 用wherehas ,q筛选的 约束到关联关系条件
+	public function getcitieswithdesinationwords(Request $request) {
+		$q = $request->get('q');
+		$data = Worldcity::whereHas('destinations',function($query) use($q){
+			$query->select('id','name','city_id')
+			->where('name','like',"%$q%");
+		})
+			->orWhere('cn_state', 'like', "%$q%")
+			->orWhere('cn_name', 'like', "%$q%")
+			->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
+		return $data;
+	}
 
 	public function getabroadcitiesbycountry(Request $request) {
 		$q = $request->get('q');
