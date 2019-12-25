@@ -89,18 +89,43 @@ class WorldcityController extends Controller {
 	public function getcitieswithdesinationwords(Request $request) {
 		$q = $request->get('q');
 
-		$data = Worldcity::select(['id', DB::Raw('concat(cn_state," 》",cn_name) as text')])
-				->where(function($query) use($q){
+		$cities = Worldcity::where('cn_state', 'like', "%$q%")
+			->whereNotNull('cn_state')->get();
+		// dd($cities->isNotEmpty());
+		if ($cities->isEmpty()) {
+			$data = Worldcity::select(['id', DB::Raw('concat(cn_state," 》",cn_name) as text')])
+				->where(function ($query) use ($q) {
 					$query->whereNotNull('cn_state')->where('cn_state', 'like', "%$q%");
 				})
-				->orWhere(function($query) use($q){
+				->orWhere(function ($query) use ($q) {
 					$query->whereNotNull('cn_state')->where('cn_name', 'like', "%$q%");
 				})
-				->orWhereHas('destinations',function($query) use($q){
-					$query->whereNotNull('cn_state')->select('id','name','city_id')
-					->where('name','like',"%$q%");
+				->orWhere(function ($query) use ($q) {
+					$query->whereNull('cn_state')->where('cn_name', 'like', "%$q%");
+				})
+				->orWhereHas('destinations', function ($query) use ($q) {
+					$query->whereNotNull('cn_state')->select('id', 'name', 'city_id')
+						->where('name', 'like', "%$q%");
 				})
 				->paginate();
+		} else {
+			$data = Worldcity::select(['id', DB::Raw('cn_name as text')])
+				->where(function ($query) use ($q) {
+					$query->whereNotNull('cn_state')->where('cn_state', 'like', "%$q%");
+				})
+				->orWhere(function ($query) use ($q) {
+					$query->whereNotNull('cn_state')->where('cn_name', 'like', "%$q%");
+				})
+				->orWhere(function ($query) use ($q) {
+					$query->whereNull('cn_state')->where('cn_name', 'like', "%$q%");
+				})
+				->orWhereHas('destinations', function ($query) use ($q) {
+					$query->whereNotNull('cn_state')->select('id', 'name', 'city_id')
+						->where('name', 'like', "%$q%");
+				})
+				->paginate();
+		}
+
 		// $data = Worldcity::whereHas('destinations', function ($query) use ($q) {
 		// 	$query->select('id', 'name', 'city_id')
 		// 		->where('name', 'like', "%$q%");
