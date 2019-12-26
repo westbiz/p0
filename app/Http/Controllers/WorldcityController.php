@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Worldcity;
+use App\Model\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -89,10 +90,15 @@ class WorldcityController extends Controller {
 	public function getcitieswithdesinationwords(Request $request) {
 		$q = $request->get('q');
 
-		$cities = Worldcity::where('cn_state', 'like', "%$q%")
+		// 当 city有相似关键字， cn_state 不为空时，
+		// 当 city有相似关键字， cn_state，为空时，
+		// 当 destination 有相似关键字
+		$citieswithstate = Worldcity::where('cn_name', 'like', "%$q%")
 			->whereNotNull('cn_state')->get();
-		// dd($cities->isNotEmpty());
-		if ($cities->isEmpty()) {
+		$citieswithoutstate = 	Worldcity::where('cn_name', 'like', "%$q%")
+			->whereNull('cn_state')->get();
+		// dd($citieswithoutstate);
+		if ($citieswithstate->isNotEmpty()) {
 			$data = Worldcity::select(['id', DB::Raw('concat(cn_state," 》",cn_name) as text')])
 				->where(function ($query) use ($q) {
 					$query->whereNotNull('cn_state')->where('cn_state', 'like', "%$q%");
@@ -100,30 +106,38 @@ class WorldcityController extends Controller {
 				->orWhere(function ($query) use ($q) {
 					$query->whereNotNull('cn_state')->where('cn_name', 'like', "%$q%");
 				})
-				->orWhere(function ($query) use ($q) {
-					$query->whereNull('cn_state')->where('cn_name', 'like', "%$q%");
-				})
 				->orWhereHas('destinations', function ($query) use ($q) {
 					$query->whereNotNull('cn_state')->select('id', 'name', 'city_id')
 						->where('name', 'like', "%$q%");
 				})
 				->paginate();
-		} else {
-			$data = Worldcity::select(['id', DB::Raw('cn_name as text')])
-				->where(function ($query) use ($q) {
-					$query->whereNotNull('cn_state')->where('cn_state', 'like', "%$q%");
-				})
-				->orWhere(function ($query) use ($q) {
-					$query->whereNotNull('cn_state')->where('cn_name', 'like', "%$q%");
-				})
-				->orWhere(function ($query) use ($q) {
-					$query->whereNull('cn_state')->where('cn_name', 'like', "%$q%");
-				})
-				->orWhereHas('destinations', function ($query) use ($q) {
-					$query->whereNotNull('cn_state')->select('id', 'name', 'city_id')
-						->where('name', 'like', "%$q%");
-				})
+		} 
+		elseif ($citieswithoutstate->isNotEmpty()) {
+			
+			$data = DB::table('t_world_cities')
+				->leftJoin('t_countries','t_world_cities.country_id','=','t_countries.id')
+				->select(['t_world_cities.id', DB::Raw('concat(t_countries.cname," 》",t_world_cities.cn_name) as text')])
+				// ->get();
+				// ->whereNull('w.cn_state')->where('w.cn_name', 'like', "%$q%")
 				->paginate();
+		} 
+		else {
+			// $data = Worldcity::select(['id', DB::Raw('cn_name as text')])
+			// 	->where(function ($query) use ($q) {
+			// 		$query->whereNotNull('cn_state')->where('cn_state', 'like', "%$q%");
+			// 	})
+			// 	->orWhere(function ($query) use ($q) {
+			// 		$query->whereNotNull('cn_state')->where('cn_name', 'like', "%$q%");
+			// 	})
+			// 	->orWhere(function ($query) use ($q) {
+			// 		$query->whereNull('cn_state')->where('cn_name', 'like', "%$q%");
+			// 	})
+			// 	->orWhereHas('destinations', function ($query) use ($q) {
+			// 		$query->whereNotNull('cn_state')->select('id', 'name', 'city_id')
+			// 			->where('name', 'like', "%$q%");
+			// 	})
+			// 	->paginate();
+				echo "string";
 		}
 
 		// $data = Worldcity::whereHas('destinations', function ($query) use ($q) {
