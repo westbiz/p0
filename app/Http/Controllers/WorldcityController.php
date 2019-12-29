@@ -101,7 +101,7 @@ class WorldcityController extends Controller {
 			->whereNotNull('cn_state')->get();
 		$citieswithoutstate = Worldcity::where('cn_name', 'like', "%$q%")
 			->whereNull('cn_state')->get();
-		$destinationnull = Destination::where('name', 'like', "%$q%")->get();
+		// $destinationnull = Destination::where('name', 'like', "%$q%")->get();
 		// dd($destinationnull->isNotEmpty());
 
 		if ($citieswithstate->isNotEmpty()) {

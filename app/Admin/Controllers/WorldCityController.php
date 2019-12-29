@@ -86,7 +86,11 @@ class WorldCityController extends AdminController {
 
 		$grid->column('目的地')->display(function ($destination) {
 
-			return "<a href='destinations/create?region=" . $this->country_id . "&city_id=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
+			return "<a href='destinations/create?country_id=" . $this->country_id . "&city_id=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
+		});
+		$grid->column('区县')->display(function ($destination) {
+
+			return "<a href='worldcities/create?country_id=" . $this->country_id . "&parent_id=" . $this->id . "' title='添加区县'><i class='fa fa-plus-square-o'></i> Add</a>&nbsp;";
 		});
 
 		// $grid->column('created_at', __('Created at'));
@@ -153,10 +157,18 @@ class WorldCityController extends AdminController {
 	protected function form() {
 		$form = new Form(new WorldCity);
 
-		// dd($form);
+		$country_id= request()->get('country_id');
+		$parent_id= request()->get('parent_id');
 		$form->text('cn_name', __('中文名'));
-		$form->select('country_id', '国家地区')->options(Country::pluck('cname', 'id'));
-		$form->select('parent_id', __('父级'))->options(Worldcity::pluck('cn_name', 'id'))->default('0');
+		if ($parent_id || $coungry_id) {
+			$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'))->default($country_id);
+			$form->select('parent_id', __('父级'))->options(Worldcity::pluck('cn_name', 'id'))->default($parent_id);
+		} else {
+			$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'));
+			$form->select('parent_id', __('父级'))->options(Worldcity::pluck('cn_name', 'id'))->default('0');
+		}
+		
+		
 		$form->text('state', __('省/州'));
 		$form->text('name', __('EN名称'));
 		$form->text('lower_name', __('小写'));
@@ -171,10 +183,10 @@ class WorldCityController extends AdminController {
 
 		$form->hasMany('destinations', '目的地', function (Form\NestedForm $form) {
 			$c_id = request()->route()->parameters('worldcities');
-			$form->text('name', '名称');
-			$form->select('country_id', '地区')->options(Country::pluck('cname', 'id'));
-			$form->select('type_id', '类型')->options(Destinationtype::pluck('name', 'id'));
-			$form->text('description', '描述');
+			$form->text('name', __('名称'));
+			$form->select('country_id', __('地区'))->options(Country::pluck('cname', 'id'));
+			$form->select('type_id', __('类型'))->options(Destinationtype::pluck('name', 'id'));
+			$form->text('description', __('描述'));
 			// $states = [
 			// 	'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
 			// 	'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],

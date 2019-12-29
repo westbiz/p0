@@ -44,19 +44,19 @@ class DestinationController extends AdminController {
 		// });
 
 		$grid->column('id', __('Id'));
-		$grid->column('name', __('Name'))->editable();
-		$grid->column('country.cname', __('Country'));
+		$grid->column('name', __('名称'))->editable();
+		$grid->column('country.cname', __('国家地区'));
 		// $grid->column('city_id', __('City'));
-		$grid->column('city.cn_name', __('City'));
-		$grid->types()->pluck('name')->label('warning')->style('max-width:150px;line-height:1.5em;word-break:break-all;');
-		$grid->column('description', __('Description'))->editable();
+		$grid->column('city.cn_name', __('城市'));
+		$grid->types(__('类型'))->pluck('name')->label('warning')->style('max-width:150px;line-height:1.5em;word-break:break-all;');
+		$grid->column('description', __('描述'))->editable();
 		$states = [
 			'on' => ['value' => 1, 'text' => '是', 'color' => 'primary'],
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
-		$grid->column('promotion', __('Promotion'))->switch($states);
+		$grid->column('promotion', __('推荐'))->switch($states);
 		$grid->column('active', __('激活'))->switch($states);
-		$grid->column('sort', __('Sort'));
+		$grid->column('sort', __('排序'));
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 
@@ -73,12 +73,12 @@ class DestinationController extends AdminController {
 		$show = new Show(Destination::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('name', __('Name'));
-		$show->field('country_id', __('Country Id'));
-		$show->field('city_id', __('City Id'));
-		$show->field('description', __('Description'));
-		$show->field('promotion', __('Promotion'));
-		$show->field('sort', __('Sort'));
+		$show->field('name', __('名称'));
+		$show->field('country_id', __('国家地区'));
+		$show->field('city_id', __('城市'));
+		$show->field('description', __('描述'));
+		$show->field('promotion', __('推荐'));
+		$show->field('sort', __('排序'));
 		// $show->field('created_at', __('Created at'));
 		// $show->field('updated_at', __('Updated at'));
 
@@ -93,16 +93,23 @@ class DestinationController extends AdminController {
 	protected function form() {
 		$form = new Form(new Destination);
 
-		$r_id = request()->get('region');
-		$c_id = request()->get('city_id');
+		$c_id = request()->get('country_id');
+		$w_id = request()->get('city_id');
 
-		$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'))->default($c_id);
+		if ($w_id || $c_id) {
+			$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'))->default($w_id);
 
-		$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'))->default($r_id);
+		$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'))->default($c_id);
+		} else {
+			$form->select('city_id', __('城市'))->options(Worldcity::pluck('cn_name', 'id'));
+
+		$form->select('country_id', __('国家地区'))->options(Country::pluck('cname', 'id'));
+		}
+
 		// $form->select('form', __('form'))->options(Country::pluck('cname', 'id'));
 		$form->text('name', __('名称'))->rules('required|min:2')
 			->creationRules(['required', "unique:tx_destinations"]);
-		$form->multipleSelect('types', '类型')->options(Destinationtype::pluck('name', 'id'));
+		$form->multipleSelect('types', __('类型'))->options(Destinationtype::pluck('name', 'id'));
 
 		$form->switch('promotion', __('推荐'));
 		$form->number('sort', __('排序'));

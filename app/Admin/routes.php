@@ -14,6 +14,8 @@ Route::group([
 
 	$router->resource('categories', 'CategoryController');
 
+	$router->resource('china-areas', ChinaareaController::class);
+
 	$router->resource('continents', ContinentController::class);
 
 	$router->resource('countries', CountryController::class);
