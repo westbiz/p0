@@ -25,25 +25,25 @@ class ChinaareaController extends AdminController {
 	protected function grid() {
 		$grid = new Grid(new ChinaArea);
 
-        $grid->model()->chengshi();
+        // $grid->model()->dishi();
 
 		$grid->filter(function ($filter) {
 			$filter->disableIdFilter();
 			$filter->column(3 / 4, function ($filter) {
-				// $areas = ChinaArea::where('level', '1')
-				// 	->orderBy('id', 'asc')
-				// 	->pluck('areaName', 'id');
 				$filter->expand()->where(function ($query) {
-					$query->where('areaName', 'like', "%{$this->input}%");
-
+                    
+                    $results = ChinaArea::where('areaName', 'like', "%{$this->input}%")->pluck('id');
+                    // dd($results);
+					$data = $query->with('children')
+                        ->where('parent_id', '=', $results);
+                        
+                    return $data;
 				}, '关键字搜索');
-
 			});
 		});
 
 		$grid->selector(function (Grid\Tools\Selector $selector) {
 			$provinces = ChinaArea::where('parent_id', -1)->pluck('areaName', 'id');
-			// dd($provinces);
 			$selector->select('parent_id', '城市类型', $provinces);
 		});
 
@@ -51,7 +51,14 @@ class ChinaareaController extends AdminController {
 		$grid->column('areaCode', __('代码'));
 		$grid->column('areaName', __('区域名称'));
 		$grid->column('parent.areaName', __('父级'))->label('info');
-        $grid->column('children', __('下辖'))->pluck('areaName')->label('default')->style('max-width:100px;line-height:1.5em;word-break:break-all;');;
+        // $grid->column('children', __('下辖'))->pluck('areaName')->label('default')
+        //     ->style('max-width:100px;line-height:1.5em;word-break:break-all;');
+        // $grid->column('children', __('下辖'))->display(function($children){
+        //     $children = array_map(function($child){
+        //         return "<span style='max-width:50px;line-height:1.5em;word-break:break-all;'><a href='/admin/china-areas/{$child['id']}/edit'>{$child['areaName']}</a></span>";
+        //     }, $children);
+        //     return join('&nbsp;', $children);
+        // });
 		$grid->column('level', __('等级'));
 		$grid->column('cityCode', __('城市编码'));
 		$states = [
@@ -80,15 +87,20 @@ class ChinaareaController extends AdminController {
 		$show->field('areaName', __('区域名称'));
 		// $show->field('active', __('激活'));
 		// $show->field('level', __('等级'));
-		$show->field('cityCode', __('城市编码'));
+		// $show->field('cityCode', __('城市编码'));
 		// $show->field('center', __('Center'));
 		// $show->field('parent_id', __('Parent id'));
 
         $show->children('下辖',function($child){
             $child->setResource('/admin/china-areas');
             $child->id();
+            $child->parent_id();
             $child->areaName();
             $child->cityCode();
+            $child->active();
+            $child->level();
+            $child->cityCode();
+            $child->center();
         });
 		// $show->field('created_at', __('Created at'));
 		// $show->field('updated_at', __('Updated at'));

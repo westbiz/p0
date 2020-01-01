@@ -21,7 +21,7 @@ class ChinaArea extends Model
 		return $this->where('level', 1);
 	}
 
-	public function scopeChengshi() {
+	public function scopeDishi() {
 		return $this->where('level', 2);
 	}
 
