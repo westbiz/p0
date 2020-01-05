@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Model\Category;
+use App\Model\ChinaArea;
 use App\Model\Product;
 use App\Model\Worldcity;
 use Encore\Admin\Controllers\AdminController;
@@ -28,18 +29,18 @@ class ProductController extends AdminController {
 		$grid = new Grid(new Product);
 
 		$grid->column('id', __('Id'));
-		$grid->column('name', __('Name'));
-		// $grid->column('avatar', __('Avatar'));
-		// $grid->column('pictureuri', __('Pictureuri'));
-		$grid->column('category_id', __('Category'));
-		$grid->column('day', __('Day'));
-		$grid->column('night', __('Night'));
-		$grid->column('star', __('Star'));
-		// $grid->column('summary', __('Summary'));
-		$grid->column('route', __('Route'));
-		$grid->column('content', __('Content'))->limit(30);
-		$grid->column('active', __('Active'));
-		$grid->column('attributes', __('Attributes'));
+		$grid->column('name', __('名称'));
+		// $grid->column('avatar', __('海报'));
+		// $grid->column('pictureuri', __('图片'));
+		$grid->column('category_id', __('分类'));
+		$grid->column('day', __('天数'));
+		$grid->column('night', __('晚数'));
+		$grid->column('star', __('星级'));
+		// $grid->column('summary', __('概述'));
+		$grid->column('route', __('行程'));
+		$grid->column('content', __('正文'))->limit(30);
+		$grid->column('active', __('上架'));
+		$grid->column('attributes', __('属性'));
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 		// $grid->column('deleted_at', __('Deleted at'));
@@ -57,21 +58,21 @@ class ProductController extends AdminController {
 		$show = new Show(Product::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('name', __('Name'));
-		$show->field('avatar', __('Avatar'));
-		$show->field('pictureuri', __('Pictureuri'));
-		$show->field('category_id', __('Category id'));
-		$show->field('day', __('Day'));
-		$show->field('night', __('Night'));
-		$show->field('star', __('Star'));
-		$show->field('summary', __('Summary'));
-		$show->field('route', __('Route'));
-		$show->field('content', __('Content'));
-		$show->field('active', __('Active'));
-		$show->field('attributes', __('Attributes'));
-		$show->field('created_at', __('Created at'));
-		$show->field('updated_at', __('Updated at'));
-		$show->field('deleted_at', __('Deleted at'));
+		$show->field('name', __('名称'));
+		$show->field('avatar', __('海报'));
+		$show->field('pictureuri', __('图片'));
+		$show->field('category_id', __('分类'));
+		$show->field('day', __('天数'));
+		$show->field('night', __('晚数'));
+		$show->field('star', __('星级'));
+		$show->field('summary', __('概述'));
+		$show->field('route', __('行程'));
+		$show->field('content', __('正文'));
+		$show->field('active', __('上架'));
+		$show->field('attributes', __('属性'));
+		// $show->field('created_at', __('Created at'));
+		// $show->field('updated_at', __('Updated at'));
+		// $show->field('deleted_at', __('Deleted at'));
 
 		return $show;
 	}
@@ -85,7 +86,8 @@ class ProductController extends AdminController {
 		$form = new Form(new Product);
 
 		$c_id = request()->get('category');
-		$form->text('name', __('Name'));
+		// dd($c_id);
+		$form->text('name', __('名称'));
 		// 国内
 		// $form->multipleSelect('cities', 'city')->options(Worldcity::pluck('cn_name', 'id'))
 		// 	->ajax('/api/v1/worldcities/getchinacitiesbykeyword');
@@ -102,19 +104,25 @@ class ProductController extends AdminController {
 		// $form->select('cities', 'city')->options()->groups($data);
 
 		// 国家地区
-		$form->multipleSelect('cities', 'city')->options(Worldcity::pluck('cn_name', 'id'))
+		if ($c_id == 1) {
+			$form->multipleSelect('cities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
+		} else {
+			$form->multipleSelect('cities', '城市')->options(Worldcity::pluck('cn_name', 'id'))
 			->ajax('/api/v1/worldcities/getcitieswithdesinationwords');
-		// $form->image('avatar', __('Avatar'));
-		// $form->text('pictureuri', __('Pictureuri'));
-		// $form->select('category_id', __('Category'))->options(Category::pluck('name', 'id'))->default($c_id);
-		// $form->number('day', __('Day'));
-		// $form->number('night', __('Night'));
-		// $form->switch('star', __('Star'));
-		// $form->text('summary', __('Summary'));
-		// $form->text('route', __('Route'));
-		// $form->textarea('content', __('Content'));
-		// $form->switch('active', __('Active'));
-		// $form->text('attributes', __('Attributes'));
+		}
+		
+
+		$form->image('avatar', __('海报'));
+		$form->text('pictureuri', __('图片'));
+		$form->select('category_id', __('分类'))->options(Category::pluck('name', 'id'))->default($c_id);
+		$form->number('day', __('天数'));
+		$form->number('night', __('晚数'));
+		$form->switch('star', __('星级'));
+		$form->text('summary', __('概述'));
+		$form->text('route', __('行程'));
+		$form->textarea('content', __('正文'));
+		$form->switch('active', __('上架'));
+		$form->text('attributes', __('属性'));
 
 		return $form;
 	}

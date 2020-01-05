@@ -31,13 +31,7 @@ class ChinaareaController extends AdminController {
 			$filter->disableIdFilter();
 			$filter->column(3 / 4, function ($filter) {
 				$filter->expand()->where(function ($query) {
-                    
-                    $results = ChinaArea::where('areaName', 'like', "%{$this->input}%")->pluck('id');
-                    // dd($results);
-					$data = $query->with('children')
-                        ->where('parent_id', '=', $results);
-                        
-                    return $data;
+                    $query->where('areaName', 'like', "%{$this->input}%");
 				}, '关键字搜索');
 			});
 		});
@@ -48,9 +42,9 @@ class ChinaareaController extends AdminController {
 		});
 
 		$grid->column('id', __('Id'));
-		$grid->column('areaCode', __('代码'));
+		$grid->column('areaCode', __('区域代码'));
 		$grid->column('areaName', __('区域名称'));
-		$grid->column('parent.areaName', __('父级'))->label('info');
+		$grid->column('parent.areaName', __('所属区域'))->label('info');
         // $grid->column('children', __('下辖'))->pluck('areaName')->label('default')
         //     ->style('max-width:100px;line-height:1.5em;word-break:break-all;');
         // $grid->column('children', __('下辖'))->display(function($children){
@@ -66,6 +60,9 @@ class ChinaareaController extends AdminController {
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
 		$grid->column('active', __('激活'))->switch($states);
+        $grid->column('目的地')->display(function ($destination) {
+            return "<a href='destinations/create?country_id=" . $this->country_id . "&city_id=" . $this->id . "' title='添加目的地'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
+        });
 		// $grid->column('center', __('Center'));
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
@@ -83,7 +80,7 @@ class ChinaareaController extends AdminController {
 		$show = new Show(ChinaArea::findOrFail($id));
 
 		$show->field('id', __('Id'));
-		$show->field('areaCode', __('代码'));
+		$show->field('areaCode', __('区域代码'));
 		$show->field('areaName', __('区域名称'));
 		// $show->field('active', __('激活'));
 		// $show->field('level', __('等级'));
@@ -93,14 +90,13 @@ class ChinaareaController extends AdminController {
 
         $show->children('下辖',function($child){
             $child->setResource('/admin/china-areas');
-            $child->id();
-            $child->parent_id();
-            $child->areaName();
-            $child->cityCode();
-            $child->active();
-            $child->level();
-            $child->cityCode();
-            $child->center();
+            $child->id(__('ID'));
+            // $child->parent_id();
+            $child->areaName( __('区域名称'));
+            $child->cityCode( __('城市编码'));
+            $child->active(__('激活'));
+            $child->level(__('等级'));
+            $child->center( __('Center'));
         });
 		// $show->field('created_at', __('Created at'));
 		// $show->field('updated_at', __('Updated at'));
@@ -116,9 +112,10 @@ class ChinaareaController extends AdminController {
 	protected function form() {
 		$form = new Form(new ChinaArea);
 
-		$form->text('areaCode', __('代码'));
+		$form->text('areaCode', __('区域代码'));
 		$form->text('areaName', __('区域名称'));
-		$form->number('parent_id', __('父级'))->default(-1);
+		$form->select('parent_id', __('所属区域'))
+            ->options(ChinaArea::pluck('areaName','id'))->default(-1);
 		$form->switch('active', __('激活'));
 		$form->switch('level', __('等级'))->default(-1);
 		$form->text('cityCode', __('城市代码'));

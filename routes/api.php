@@ -38,7 +38,7 @@ Route::get('countries', function () {
 	return CountryResource::collection(Country::paginate(5));
 });
 
-// --resource
+// countries--resource
 // 准备删除
 Route::get('countries/getcitesbycountryresource', 'CountryController@getcitesbycountryresource')->name('getcitesbycountryresource');
 
@@ -49,3 +49,8 @@ Route::get('countries/getcountries', 'CountryController@getcountries')->name('ge
 Route::get('countries/getcountrycities', 'CountryController@getcountrycities')->name('getcountrycities');
 
 Route::get('countries/getcountrywithcities', 'CountryController@getcountrywithcities')->name('getcountrywithcities');
+
+
+// --chinaareas
+Route::get('chinaareas/getcitiesbyprovince', 'ChinaAreaController@getcitiesbyprovince')->name('getcitiesbyprovince');
+
