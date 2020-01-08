@@ -43,7 +43,7 @@ class ChinaareaController extends AdminController {
 
 		$grid->column('id', __('Id'));
 		$grid->column('areaCode', __('区域代码'));
-		$grid->column('areaName', __('区域名称'));
+		$grid->column('areaName', __('区域名称'))->editable();
 		$grid->column('parent.areaName', __('所属区域'))->label('info');
         // $grid->column('children', __('下辖'))->pluck('areaName')->label('default')
         //     ->style('max-width:100px;line-height:1.5em;word-break:break-all;');

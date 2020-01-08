@@ -89,27 +89,36 @@ class ChinaAreaController extends Controller
     {
         $q = $request->get('q');
 
-        $prvlike = ChinaArea::where('areaName','like',"%$q%")
-                            ->where('level',1)->get();
-
-        $regionlike = ChinaArea::where('areaName','like',"%$q%")
+        $regions = ChinaArea::where('areaName','like',"%$q%")
                             ->where('level',2)->get();
-        $citylike = ChinaArea::where('areaName','like',"%$q%")
-                            ->where('level',3)->get();        
-        if ($citylike->isNotEmpty()) {
+        $cities = ChinaArea::where('areaName','like',"%$q%")
+                            ->where('level',3)->get();
+        $provinces = ChinaArea::where('areaName','like',"%$q%")
+                            ->where('parent_id', -1)->get();
+
+        if ($regions->isNotEmpty()) {
+            $data = DB::table('t_areas as p')
+                        ->rightjoin('t_areas as a','p.id','=','a.parent_id')
+                        ->select(['a.id', DB::Raw('concat(p.areaName," 》",a.areaName) as text')])
+                        ->where('p.areaName','like',"%$q%")
+                        // ->where('p.active','=',1)
+                            ->paginate();
+        } 
+
+        elseif ($cities->isNotEmpty() ) {
             $data = DB::table('t_areas as a')
-                        ->leftjoin('t_areas as p','a.parent_id','=','p.id')
+                        ->rightjoin('t_areas as p','a.parent_id','=','p.id')
                         ->select(['a.id', DB::Raw('concat(p.areaName," 》",a.areaName) as text')])
                         ->where('a.areaName','like',"%$q%")
+                        // ->where('a.active','=',1)
                             ->paginate();
-        } elseif ($regionlike->isNotEmpty()) {
-            $data = ChinaArea::where('areaName','like',"%$q%")
-                            ->paginate(null, ['id', 'areaName as text']);
-        } else {
-            $data = DB::table('t_areas as a')
-                        ->rightjoin('t_areas as p','a.id','=','p.parent_id')
-                        ->select(['p.id', DB::Raw('concat(a.areaName," 》",p.areaName) as text')])
-                        ->where('a.areaName','like',"%$q%")
+        }  
+        else {
+            $data = DB::table('t_areas as p')
+                        ->rightjoin('t_areas as a','p.id','=','a.parent_id')
+                        ->select(['a.id', DB::Raw('concat(p.areaName," 》",a.areaName) as text')])
+                        ->where('p.areaName','like',"%$q%")
+                        // ->where('p.active','=',1)
                             ->paginate();
         }
         

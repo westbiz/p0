@@ -104,6 +104,7 @@ class ProductController extends AdminController {
 		// $form->select('cities', 'city')->options()->groups($data);
 
 		// 国家地区
+		// 当分类=国内，否则境外
 		if ($c_id == 1) {
 			$form->multipleSelect('cities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
 		} else {
