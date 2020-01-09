@@ -16,6 +16,13 @@ class ChinaArea extends Model
 	];
 
 
+	public function getAreaNameAttribute($value)
+	{
+		$pattern = array("自治区", "自治州", "省", "市", '特别行政区', '回族', '维吾尔', '壮族');
+		$replace = '';
+		return str_replace($pattern, $replace, $value);
+	}
+
 
 	public function scopeShengqu() {
 		return $this->where('level', 1);
