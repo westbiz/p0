@@ -19,4 +19,8 @@ class Product extends Model {
 	public function cities() {
 		return $this->belongsToMany(Worldcity::class, 'tx_city_products', 'product_id', 'city_id');
 	}
+
+	public function chinacities() {
+		return $this->belongsToMany(ChinaArea::class, 'tx_chinacity_products', 'product_id', 'city_id');
+	}
 }

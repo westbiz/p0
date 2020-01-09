@@ -41,6 +41,10 @@ class ProductController extends AdminController {
 		$grid->column('content', __('正文'))->limit(30);
 		$grid->column('active', __('上架'));
 		$grid->column('attributes', __('属性'));
+		$grid->column('编辑')->display(function ($destination) {
+
+			return "<a href='products/".$this->id."/edit?category=" . $this->category_id . "' title='Edit'><i class='fa fa-edit'></i> Edit</a>&nbsp;";
+		});
 		// $grid->column('created_at', __('Created at'));
 		// $grid->column('updated_at', __('Updated at'));
 		// $grid->column('deleted_at', __('Deleted at'));
@@ -86,7 +90,7 @@ class ProductController extends AdminController {
 		$form = new Form(new Product);
 
 		$c_id = request()->get('category');
-		// dd($c_id);
+		// dd($form);
 		$form->text('name', __('名称'));
 		// 国内
 		// $form->multipleSelect('cities', 'city')->options(Worldcity::pluck('cn_name', 'id'))
@@ -106,24 +110,24 @@ class ProductController extends AdminController {
 		// 国家地区
 		// 当分类=国内，否则境外
 		if ($c_id == 1) {
-			$form->multipleSelect('cities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
-		} else {
 			$form->multipleSelect('cities', '城市')->options(Worldcity::pluck('cn_name', 'id'))
 			->ajax('/api/v1/worldcities/getcitieswithdesinationwords');
+		} else {
+			$form->multipleSelect('chinacities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
 		}
 		
 
-		$form->image('avatar', __('海报'));
-		$form->text('pictureuri', __('图片'));
-		$form->select('category_id', __('分类'))->options(Category::pluck('name', 'id'))->default($c_id);
-		$form->number('day', __('天数'));
-		$form->number('night', __('晚数'));
-		$form->switch('star', __('星级'));
-		$form->text('summary', __('概述'));
-		$form->text('route', __('行程'));
-		$form->textarea('content', __('正文'));
-		$form->switch('active', __('上架'));
-		$form->text('attributes', __('属性'));
+		// $form->image('avatar', __('海报'));
+		// $form->text('pictureuri', __('图片'));
+		// $form->select('category_id', __('分类'))->options(Category::pluck('name', 'id'))->default($c_id);
+		// $form->number('day', __('天数'));
+		// $form->number('night', __('晚数'));
+		// $form->switch('star', __('星级'));
+		// $form->text('summary', __('概述'));
+		// $form->text('route', __('行程'));
+		// $form->textarea('content', __('正文'));
+		// $form->switch('active', __('上架'));
+		// $form->text('attributes', __('属性'));
 
 		return $form;
 	}

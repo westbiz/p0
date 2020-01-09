@@ -98,9 +98,10 @@ class ChinaAreaController extends Controller
 
         if ($regions->isNotEmpty()) {
             $data = DB::table('t_areas as p')
-                        ->rightjoin('t_areas as a','p.id','=','a.parent_id')
+                        ->leftjoin('t_areas as a','p.id','=','a.parent_id')
                         ->select(['a.id', DB::Raw('concat(p.areaName," 》",a.areaName) as text')])
-                        ->where('p.areaName','like',"%$q%")
+                        ->where('a.areaName','like',"%$q%")
+                        // ->where('p.level',1)
                         // ->where('p.active','=',1)
                             ->paginate();
         } 
