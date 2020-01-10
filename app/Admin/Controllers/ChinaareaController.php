@@ -37,7 +37,13 @@ class ChinaareaController extends AdminController {
 		});
 
 		$grid->selector(function (Grid\Tools\Selector $selector) {
-			$provinces = ChinaArea::where('parent_id', -1)->pluck('areaName', 'id');
+			$provinces = ChinaArea::where('areaName', 'like', "%自治区%")
+								->orWhere('areaName', 'like', "%省%")
+								->orWhere('areaName', 'like', "%北京市%")
+								->orWhere('areaName', 'like', "%上海市%")
+								->orWhere('areaName', 'like', "%天津市%")
+								->orWhere('areaName', 'like', "%特别行政区%")
+								->pluck('areaName', 'id');
 			$selector->select('parent_id', '城市类型', $provinces);
 		});
 
