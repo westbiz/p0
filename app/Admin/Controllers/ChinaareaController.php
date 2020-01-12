@@ -8,6 +8,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Encore\Admin\Widgets\Table;
+use Illuminate\Support\Facades\DB;
 
 class ChinaareaController extends AdminController {
 	/**
@@ -37,13 +38,9 @@ class ChinaareaController extends AdminController {
 		});
 
 		$grid->selector(function (Grid\Tools\Selector $selector) {
-			$provinces = ChinaArea::where('areaName', 'like', "%自治区%")
-								->orWhere('areaName', 'like', "%省%")
-								->orWhere('areaName', 'like', "%北京市%")
-								->orWhere('areaName', 'like', "%上海市%")
-								->orWhere('areaName', 'like', "%天津市%")
-								->orWhere('areaName', 'like', "%特别行政区%")
+			$provinces = ChinaArea::where('parent_id',-1)
 								->pluck('areaName', 'id');
+			// dd($provinces);
 			$selector->select('parent_id', '城市类型', $provinces);
 		});
 

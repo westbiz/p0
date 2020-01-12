@@ -24,6 +24,14 @@ class ChinaArea extends Model
 	}
 
 
+	public function scopeProvincial() {
+		// 省区直辖市、特别行政区
+		$provincial = collect([2,20,37,217,348,464,579,793,810,920,1021,1043,1238,1350,
+			1505,1798,1935,2079,2205,2236,2580,2726,2808,2926,3027,3080,3108,3228,
+			3229,3251,]);
+		return $this->whereIn('id', $provincial);
+	}
+
 	public function scopeShengqu() {
 		return $this->where('level', 1);
 	}
@@ -34,6 +42,14 @@ class ChinaArea extends Model
 
 	public function scopeQuxian() {
 		return $this->where('level', 3);
+	}
+
+
+	// 港澳台
+	public function scopeGangaotai($query) {
+		// 港澳台id
+		$areas = collect([3229,3251,3228]);
+		return $query->whereIn('id', $areas);
 	}
 
 	//三级联动

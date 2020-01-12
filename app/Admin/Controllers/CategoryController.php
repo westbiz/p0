@@ -25,7 +25,7 @@ class CategoryController extends AdminController {
 		$grid = new Grid(new Category);
 
 		$grid->column('id', __('Id'));
-		$grid->column('name', __('名称'));
+		$grid->column('name', __('名称'))->editable();
 		$grid->column('parent_id', __('父 id'));
 		$grid->column('order', __('排序'));
 		$grid->column('description', __('说明'))->limit(30);
