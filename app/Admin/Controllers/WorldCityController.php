@@ -56,6 +56,8 @@ class WorldCityController extends AdminController {
 			// 	0 => '未推荐',
 			// 	1 => '推荐',
 			// ]);
+			$countries = Country::pluck('cname','id');
+			$selector->select('country_id', '国家地区', $countries);
 			$selector->select('capital', '城市类型', [
 				0 => '城市',
 				1 => '首府',

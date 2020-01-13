@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Model\Category;
 use App\Model\ChinaArea;
+use App\Model\Country;
 use App\Model\Product;
 use App\Model\Worldcity;
 use Encore\Admin\Controllers\AdminController;
@@ -111,8 +112,13 @@ class ProductController extends AdminController {
 		// 当分类=国内，否则境外
 		if ($c_id == 1) {
 			$form->multipleSelect('chinacities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
-		} elseif ($c_id == 3) {
+		} elseif ($c_id == 2) {
+			$form->multipleSelect('countries', '国家地区')->options(Country::abroad()->pluck('cname','id'));
+		} 
+		 elseif ($c_id == 3) {
 			$form->multipleSelect('chinacities', '城市')->options(ChinaArea::gangaotai()->pluck('areaName','id'));
+		} elseif ($c_id == 4) {
+			$form->multipleSelect('countries', '国家地区')->options(Worldcity::pluck('cn_name', 'id'));
 		} 
 
 		else {

@@ -17,6 +17,12 @@ class Country extends Model {
 		return $this->where('is_island', 1);
 	}
 
+	// 国外
+	public function scopeAbroad() {
+		$collections = collect([100,101,75,71]);
+		return $this->whereNotIn('id', $collections);
+	}	
+
 	//一对多，大洲
 	public function continent() {
 		return $this->belongsTo(Continent::class, 'continent_id', 'id');
