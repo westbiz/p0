@@ -21,7 +21,13 @@ class Country extends Model {
 	public function scopeAbroad() {
 		$collections = collect([100,101,75,71]);
 		return $this->whereNotIn('id', $collections);
-	}	
+	}
+
+	// 港澳台
+	public function scopeGangaotai() {
+		$areas = collect([71, 75, 100]);
+		return $this->whereIn('id', $areas);
+	}
 
 	//一对多，大洲
 	public function continent() {

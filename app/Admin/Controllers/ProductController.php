@@ -111,14 +111,17 @@ class ProductController extends AdminController {
 		// 国家地区
 		// 当分类=国内，否则境外
 		if ($c_id == 1) {
-			$form->multipleSelect('chinacities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
+			$form->multipleSelect('cities', '城市')->options(Worldcity::pluck('cn_name', 'id'))->ajax('/api/v1/worldcities/getcitieswithdesinationwords');
+			// $form->multipleSelect('chinacities', '城市')->options(ChinaArea::pluck('areaName','id'))->ajax('/api/v1/chinaareas/getcitiesbyprovince');
 		} elseif ($c_id == 2) {
 			$form->multipleSelect('countries', '国家地区')->options(Country::abroad()->pluck('cname','id'));
 		} 
 		 elseif ($c_id == 3) {
-			$form->multipleSelect('chinacities', '城市')->options(ChinaArea::gangaotai()->pluck('areaName','id'));
+			$form->multipleSelect('cities', '城市')->options(Country::gangaotai()->pluck('cname', 'id'));
 		} elseif ($c_id == 4) {
-			$form->multipleSelect('countries', '国家地区')->options(Worldcity::pluck('cn_name', 'id'));
+			$form->multipleSelect('countries', '国家地区')->options(Country::abroad()->pluck('cname','id'));
+			$form->multipleSelect('cities', '城市')->options(Worldcity::pluck('cn_name', 'id'))
+			->ajax('/api/v1/worldcities/getcitieswithdesinationwords');
 		} 
 
 		else {
