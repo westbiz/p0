@@ -81,8 +81,8 @@ class WorldcityController extends Controller {
 	public function getchinacitiesbykeyword(Request $request) {
 		$q = $request->get('q');
 		return Worldcity::chinacities()
-			->where('cn_state', 'like', "%$q%")
-			->orWhere('cn_name', 'like', "%$q%")
+			->where('cn_name', 'like', "%$q%")
+			->orWhere('cn_state', 'like', "%$q%")
 			->paginate(null, ['id', DB::Raw('concat(cn_state," 》",cn_name) as text')]);
 	}
 
