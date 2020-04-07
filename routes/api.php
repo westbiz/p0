@@ -2,6 +2,7 @@
 
 use App\Http\Resources\CountryResource;
 use App\Http\Resources\WorldcityResource;
+use App\Http\Resources\CountryCollection;
 use App\Model\Country;
 use App\Model\Worldcity;
 use Illuminate\Http\Request;
@@ -30,12 +31,16 @@ Route::get('worldcities/all', 'WorldcityController@allcities')->name('allcities'
 
 // 准备删除
 Route::get('worldcities', function () {
-	return WorldcityResource::collection(Worldcity::all());
+	return Worldcitycollection(Worldcity::all());
 });
 
 // 准备删除
 Route::get('countries', function () {
 	return CountryResource::collection(Country::paginate(5));
+});
+
+Route::get('countries/{id}', function ($id) {
+	return new CountryResource(Country::find($id));
 });
 
 // countries--resource

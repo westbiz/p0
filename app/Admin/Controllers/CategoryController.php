@@ -34,7 +34,7 @@ class CategoryController extends AdminController {
 			'off' => ['value' => 0, 'text' => '否', 'color' => 'default'],
 		];
 		$grid->column('active', __('激活'))->switch($states);
-		$grid->column('发布')->display(function ($destination) {
+		$grid->column(__('发布'))->display(function ($destination) {
 
 			return "<a href='products/create?category=" . $this->id . "' title='添加产品'><i class='fa fa-plus-square'></i> Add</a>&nbsp;";
 		});
