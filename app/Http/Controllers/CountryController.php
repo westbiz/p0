@@ -36,6 +36,7 @@ class CountryController extends Controller {
 	 */
 	public function show($id) {
 		//
+		return view('testcountry', ['country'=>Country::findOrFail($id)]);
 	}
 
 	/**

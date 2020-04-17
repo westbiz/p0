@@ -18,10 +18,11 @@ class WorldcityResource extends JsonResource {
 		return [
 			'id' => $this->id,
 			'text' => $this->cn_name,
-			'country' => [
-				'name'=>$this->country->cname, 
-				'url'=> url('api/v1/countries/' . $this->country_id),
-			],
+			'country' => $this->country->cname,
+			// 'country' => [
+			// 	'name'=>$this->country->cname, 
+			// 	'url'=> url('api/v1/countries/' . $this->country_id),
+			// ],
 			'state' => $this->state, 
 			'name' =>$this->name, 
 			'lower_name'=>$this->lower_name, 
@@ -30,8 +31,8 @@ class WorldcityResource extends JsonResource {
 			'city_code'=>$this->city_code, 
 			'state_code'=>$this->statecode, 
 			'url'=> url('api/v1/worldcities/' . $this->id),
-			'created_at'=> $this->created_at,
-            'updated_at'=> $this->updated_at,
+			'created_at'=> (string)$this->created_at,
+            'updated_at'=> (string)$this->updated_at,
 			// 'created_at'=> Carbon::parse($this->created_at)->toDateTimeString(),
             // 'updated_at'=> Carbon::parse($this->updated_at)->toDateTimeString(),
 		];

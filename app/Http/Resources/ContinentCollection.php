@@ -17,9 +17,9 @@ class ContinentCollection extends ResourceCollection
         // return parent::toArray($request);
         return [
 			'data' => $this->collection,
-			'links' => [
-				'self' => 'link-value',
-			],
+			// 'links' => [
+			// 	'self' => 'link-value',
+			// ],
 		];
     }
 }

@@ -8,6 +8,8 @@ class WorldCity extends Model {
 	//
 	protected $table = 't_world_cities';
 
+	protected $dates = ['created_at', 'updated_at'];
+
 	protected $casts = [
 		'neighbour' => 'json',
 	];

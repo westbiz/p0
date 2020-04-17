@@ -18,11 +18,12 @@ class ContinentResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'parent' => $this->parentcontinent->cn_name,
+            // 'parent' => $this->parentcontinent->cn_name,
             'cn_name' => $this->cn_name,
             'en_name' => $this->en_name,
-            'created_at'=> $this->created_at,
-            'updated_at'=> $this->updated_at,
+            'created_at'=> (string)$this->created_at,
+            'updated_at'=> (string)$this->updated_at,
+            'countries' => CountryResource::collection($this->whenLoaded('continentcountries')),
         ];
     }
 }

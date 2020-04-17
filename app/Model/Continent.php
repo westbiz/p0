@@ -8,10 +8,7 @@ class Continent extends Model {
 	//
 	protected $table = 't_continents';
 
-	protected $casts= [
-		'created_at' => 'datetime:Y-m-d H:00',
-		'updated_at' => 'datetime:Y-m-d H:00',
-	];
+	protected $dates = ['created_at', 'updated_at'];
 
 	protected $fillable = [
 		'cn_name', 'parent_id', 'en_name',

@@ -8,6 +8,8 @@ class Country extends Model {
 	//
 	protected $table = 't_countries';
 
+	protected $dates = ['created_at', 'updated_at'];
+
 	protected $fillable = [
 		'continent_id', 'name', 'lower_name', 'country_code', 'full_name', 'cname', 'full_cname', 'remark', 'active', 'is_island', 'promotion',
 	];

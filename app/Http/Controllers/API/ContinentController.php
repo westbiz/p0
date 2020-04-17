@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Model\Continent;
+use App\Model\Country;
 use App\Http\Resources\ContinentResource;
 use App\Http\Resources\ContinentCollection;
+use App\Http\Resources\CountryCollection;
 use Illuminate\Http\Request;
 
 class ContinentController extends Controller
@@ -17,7 +19,8 @@ class ContinentController extends Controller
      */
     public function index()
     {
-        //
+        //返回集合
+        return new ContinentCollection(Continent::paginate(null));
     }
 
     /**
@@ -37,9 +40,14 @@ class ContinentController extends Controller
      * @param  \App\Model\Continent  $continent
      * @return \Illuminate\Http\Response
      */
-    public function show(Continent $continent)
+    public function show($id)
     {
-        //
+        // 
+        $continent = new ContinentResource(Continent::with('continentcountries')->findOrFail($id));
+        // if (!$continent) {
+        //     echo 'err message...';
+        // }
+        return response()->json($continent);
     }
 
     /**
@@ -65,13 +73,11 @@ class ContinentController extends Controller
         //
     }
 
-    public function getContinents()
-    {
-        return new ContinentCollection(Continent::paginate(null));
-    }
 
-    public function getContinent($id)
+    public function getCountries($id)
     {
-        return new ContinentResource(Continent::find($id));
+        // 获取子类
+        $countries = new CountryCollection(Country::where('continent_id','=',$id)->paginate(null));
+        return response()->json($countries);
     }
 }

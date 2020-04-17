@@ -15,10 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/vwelcome', function () {
-//     return view('vwelcome');
-// });
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/vwelcome', function () {
+    return view('vwelcome');
+});
+
+Route::get('/testcountry', function () {
+    return view('testcountry');
+});
+Route::get('/testcountry/{id}', 'CountryController@show');

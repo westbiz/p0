@@ -17,6 +17,7 @@ class WorldcityController extends Controller
     public function index()
     {
         //
+        return WorldcityResource::collection(WorldCity::paginate(10));
     }
 
     /**
@@ -39,6 +40,8 @@ class WorldcityController extends Controller
     public function show($id)
     {
         //
+        $cities = new WorldcityResource(Worldcity::with('country')->findOrFail($id));
+        return response()->json($cities);
     }
 
     /**
@@ -64,13 +67,13 @@ class WorldcityController extends Controller
         //
     }
 
-    public function getWorldcities()
+
+    public function getCountryCities($country_id)
     {
-	    return WorldcityResource::collection(WorldCity::paginate(10));
+        $cities = WorldcityResource::collection(WorldCity::where('country_id','=',$country_id)
+                                ->paginate(null));
+        return response()->json($cities);
     }
 
-    public function getWorldcity($id)
-    {
-        return new WorldcityResource(Worldcity::find($id));
-    }
+ 
 }

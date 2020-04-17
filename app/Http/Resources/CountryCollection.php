@@ -21,4 +21,13 @@ class CountryCollection extends ResourceCollection {
 			],
 		];
 	}
+
+	public function with($request)
+    {
+        return [
+            'meta' => [
+                'type' => 'json',
+            ],
+        ];
+    }
 }

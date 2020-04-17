@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Model\Country;
+use App\Model\WorldCity;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CountryResource;
 use App\Http\Resources\CountryCollection;
-use App\Model\Country;
+use App\Http\Resources\WorldcityResource;
+
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -17,8 +20,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
-        echo "index方法";
+        //获取所有
+        return new CountryCollection(Country::paginate(null));
     }
 
     /**
@@ -41,6 +44,9 @@ class CountryController extends Controller
     public function show($id)
     {
         //
+        $country = new CountryResource(Country::with('continentlocation')
+                ->with('cities')->findOrFail($id));
+        return response()->json($country);
     }
 
     /**
@@ -66,15 +72,6 @@ class CountryController extends Controller
         //
     }
 
-    // 获取所有
-    public function getCountries(){
-        return CountryResource::collection(Country::paginate(null));
-    }
-
-    // 获取单个
-    public function getCountry($id){
-        return new CountryResource(Country::find($id));
-    }
 
     // 获取通过上级获取所有
     public function getCountriesByContinent(Request $request)
